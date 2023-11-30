@@ -1,0 +1,121 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="text-center">
+                <h3>Admin</h3>
+              </div>
+              <div>
+                <ul class="list-group list-group-flush ">
+                  <li class="list-group-item">User management
+                    <ul class="list-group list-group-flush ">
+                      <li class="list-group-item"><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage
+                          User</a></li>
+                    </ul>
+                  </li>
+                  <li class="list-group-item">Product management
+                    <ul class="list-group list-group-flush ">
+                      <li class="list-group-item"><a href="/api/v1/admin/products" class="text-decoration-none">View
+                          Product </a></li>
+                      <li class="list-group-item"><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add
+                          Product</a></li>
+                    </ul>
+                  </li>
+                  <li class="list-group-item">Category management
+                    <ul class="list-group list-group-flush ">
+                      <li class="list-group-item"><a href="/api/v1/admin/categorymanage"
+                          class="text-decoration-none">Manage Category </a></li>
+                      <li class="list-group-item"><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add
+                          Category</a></li>
+                    </ul>
+                  </li>
+                  <li class="list-group-item">Order management
+                    <ul class="list-group list-group-flush ">
+                      <li class="list-group-item"><a href="/api/v1/admin/allorders" class="text-decoration-none">All
+                          Orders</a></li>
+                    </ul>
+                  </li>
+                  <li  class="list-group-item" >Coupon management
+                    <ul class="list-group list-group-flush ">
+                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                       
+                    </ul>
+                </li>
+
+
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col">
+            <div class="container">
+              <h1>Edit Category</h1>
+              <div class="row">
+                <div class="col-md-8">
+                  <form action="/api/v1/admin/categorymanage/editcategory/<%= category._id %>" method="POST"
+                    class="form-control">
+                    <div class="form-group">
+                      <label for="name">Category Name:</label>
+                      <input type="text" id="name" name="name" value="<%=category.name%>" required class="form-control">
+    
+                    </div>
+    
+                    <div class="form-group">
+                      <label for="description">Description:</label>
+                      <textarea id="description" name="description" required
+                        class="form-control"><%=category.description%></textarea>
+                    </div>
+    
+                    <div class="form-group">
+                      <input type="hidden" name="productId" value="<%=category._id%>">
+                    </div>
+    
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary my-2 ">edit Category</button>
+                    </div>
+                    <% if (errors && errors.length > 0) { %>
+                      <div class="alert alert-danger">
+                          <ul>
+                              <% errors.forEach(error => { %>
+                                  <li><%= error %></li>
+                              <% }); %>
+                          </ul>
+                      </div>
+                  <% } %>
+              
+                  <% if(typeof message !== 'undefined'){ %>
+                    <div class="alert alert-danger">
+                        <li ><%= message %></li>
+                    </div> 
+                    <% } %> 
+                  </form>
+    
+    
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <%- include('../layouts/adminfooter.ejs') %>

@@ -1,0 +1,58 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+<div class="container vh-100  mt-4 ">
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>User</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" ><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show addresses</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change passord</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/usercoupons" class="text-decoration-none">Coupons </a></li>
+                            </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8 ">
+            <div class="card">
+                <div class="card-body">
+                    <h1>Welcome <%= user.name %></h1>
+                    <div class="form-group">
+                        <label for="name" class="fw-bold">User Name</label>
+                        <p><%=user.name%></p>
+                        </div> 
+                
+                        <div class="form-group">
+                            <label for="description" class="fw-bold">Email</label>
+                            <p><%=user.email%></p>
+                        </div> 
+                       
+                
+                        <div class="form-group ">
+                            <label for="description" class="fw-bold">Mobile</label>
+                            <p><%=user.mobile%></p>
+                            
+                        </div> 
+                </div>
+            </div>
+
+        </div>
+        
+
+    </div>
+</div>
+
+
+
+<%- include('../layouts/footer.ejs') %>

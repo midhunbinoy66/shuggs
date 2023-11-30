@@ -1,0 +1,76 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+<div class="container vh-100 mt-4 ">
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>User</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" ><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show addresses</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change passord</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a></li>
+                            </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8 ">
+            <div class="card">
+                <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1> <%= user.name%>'s Wallet  </h1>
+                    <h2 class="text-success">Wallet Total: <%= user.wallet %> </h2>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Type</th>    
+                    </tr>
+                    <% if(user.walletTransactions.length>0) { %>
+                    
+                        <% user.walletTransactions.forEach(transaction => { %>
+                            <tr class="<%= transaction.type ==='debit'?'debit-row':'credit-row' %> " ><% 
+                                const formattedDate = transaction.date.toLocaleDateString('en-US');
+                                %>
+                                
+                                <td><%= formattedDate%>  </td>
+                                <td> <%= transaction.amount %>  </td>
+                                <td> <%= transaction.type %>  </td>
+                            </tr>
+                            
+                       <% }); %>
+
+                   <% } %>
+
+
+                </table>
+                </div>
+            </div>
+
+        </div>
+        
+
+    </div>
+</div>
+
+<style>
+    .debit-row{
+        background-color: rgb(236, 95, 95);
+    }
+
+    .credit-row{
+        background-color: rgb(165, 245, 165);
+    }
+</style>
+<%- include('../layouts/footer.ejs') %>

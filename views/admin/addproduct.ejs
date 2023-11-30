@@ -1,0 +1,241 @@
+
+<%- include('../layouts/adminheader.ejs') %>
+
+<div class="container ">
+    <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>Admin</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" >User management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Product management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Category management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Order management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Coupon management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                   
+                                </ul>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>Product Upload Form</h1>
+            
+            <% if (errors && errors.length > 0) { %>
+                <div class="alert alert-danger">
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+        
+        
+         <form action="/api/v1/admin/addproduct" method="POST" enctype="multipart/form-data" class="form-control" >
+                
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" id="name" name="name" class="form-control">
+                </div>
+        
+         
+                <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required class="form-control"></textarea>
+                </div>
+        
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="text" id="price" name="price" required class="form-control" min="100">
+                </div>
+        
+                <div class="form-group my-3" >
+                    <select name="category" id="" class="form-control">
+                      <option value="">Category</option>
+                      <option value="Outdoor">Outdoor</option>
+                      <option value="Athletic">Athletic</option>
+                      <option value="Casual">Casual</option>
+                      <option value="Formal">Formal</option>
+                    </select>
+
+                    <!-- <label for="price">Category:</label>
+                    <input type="text" id="category" name="category" required class="form-control"> -->
+                </div>
+                
+                <div class="form-group my-3" >
+                    <select name="gender" id="" class="form-control">
+                      <option value="">Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="unisex">Unisex</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group my-3" >
+                    <select name="brand" id="" class="form-control">
+                      <option value="">Brand</option>
+                      <option value="Nike">Nike</option>
+                      <option value="Puma">Puma</option>
+                      <option value="Adidas">Adidas</option>
+                      <option value="New Balance">New Balance</option>
+                    </select>
+                </div>
+
+
+                <!-- <div id="sizevariantcontainer "> -->
+                    <!-- <div class="form-group my-3" id="sizedropdown" >
+                        <select name="size" id="" class="form-control">
+                          <option value="">Size</option>
+                          <option value="uk7">UK 7</option>
+                          <option value="uk8">UK 8</option>
+                          <option value="uk9">UK 9</option>
+                          <option value="uk10">UK 10</option>
+                          <option value="uk11">UK 11</option>
+                        </select>
+                    </div>
+                    <div class="form-group my-3" id="quantitydropdown" >
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" required class="form-control" min="1" max="50">
+                    </div> -->
+
+
+                    
+                <!-- </div> -->
+                <div id="sizeVariantsContainer" class="d-flex flex-column " >
+                    <label for="">size</label>
+                    <input type="text" name="sizes[]" required  >
+                    <label for="">Quantity</label>
+                    <input type="number" name="quantities[]" required >
+                  </div>
+                  <div class="form-group my-2">
+                    <button type="button" id="addSizeVariant" class="btn btn-primary">Add Size Variant</button>
+                  </div>
+                  
+               
+                <div class="form-group">            
+                <label for="image">Product Image:</label>
+                <input type="file" id="image" name="images" accept="image/*" multiple  class="form-control" required>
+                <div id="image-preview-container" class="mt-2"></div>
+            </div>
+                <div class="form-group my-2" >
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </div>
+                
+         </form>
+        </div>
+        <% if(typeof message !== 'undefined'){ %>
+            <div class="alert alert-danger">
+                <li ><%= message %></li>
+            </div> 
+            <% } %> 
+  
+    </div>
+  </div>
+
+<script>
+    const sizeVariantsContainer = document.getElementById('sizeVariantsContainer');
+    const addSizeVariantButton = document.getElementById('addSizeVariant');
+
+    addSizeVariantButton.addEventListener('click', () => {
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.placeholder = 'Size';
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.placeholder = 'Quantity';
+
+        sizeVariantsContainer.appendChild(sizeInput);
+        sizeVariantsContainer.appendChild(quantityInput);
+    });
+</script>
+
+<script>
+    document.getElementById('image').addEventListener('change', handleImageChange);
+
+    function handleImageChange(event) {
+        const previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        const files = event.target.files;
+        for (const file of files) {
+            const imageElement = document.createElement('img');
+            imageElement.src = URL.createObjectURL(file);
+            imageElement.classList.add('image-preview');
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'mx-2');
+            removeButton.addEventListener('click', () => removeImage(file));
+
+            const previewWrapper = document.createElement('div');
+            previewWrapper.appendChild(imageElement);
+            previewWrapper.appendChild(removeButton);
+            previewContainer.appendChild(previewWrapper);
+        }
+    }
+
+    function removeImage(file) {
+    const input = document.getElementById('image');
+    const newFiles = Array.from(input.files).filter(f => f !== file);
+
+    const newFileList = new DataTransfer();
+    newFiles.forEach(file => {
+        newFileList.items.add(file);
+    });
+
+    input.files = newFileList.files;
+
+    // Re-trigger the change event to update the previews
+    const changeEvent = new Event('change', { bubbles: true });
+    input.dispatchEvent(changeEvent);
+}
+
+</script>
+
+<style>
+    .image-preview {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+</style>
+
+<%- include('../layouts/adminfooter.ejs') %>

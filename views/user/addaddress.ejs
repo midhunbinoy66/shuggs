@@ -1,0 +1,77 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+
+
+<div class="container vh-100 my-2">
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="text-center">
+                            <h3>User</h3>
+                        </div>
+                        <div>
+                            <ul class="list-group list-group-flush ">
+                                <li  class="list-group-item" ><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
+                                <li  class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                                <li  class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show addresses</a></li>
+                                <li  class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change passord</a></li>
+                                
+                                </ul>
+                        </div>
+      
+                    </div>
+                </div>
+                </div>
+        </div>
+        <div class="col-md-8 my-2">         
+<div class="container vh-100">
+    <div class="row">
+        <div class="col-md-8">
+            <form action="/api/v1/user/addaddress"  method="post" class="form-control">
+
+                <div class="form-group" >
+                    <label for="">Locality</label>
+                    <input type="text" name="locality" placeholder="locality" class="form-control">
+                </div>
+                <div class="form-group" >
+                    <label for="">City</label>
+                    <input type="text" name="city" placeholder="city" class="form-control">
+                </div>
+                <div class="form-group" >
+                    <label for="">district</label>
+                    <input type="text" name="district" placeholder="district" class="form-control">
+                </div>
+                <div class="form-group" >
+                    <label for="">State</label>
+                    <input type="text" name="state" placeholder="state" class="form-control">
+                </div>
+                <div class="form-group" >
+                    <label for="">ZipCode</label>
+                    <input type="number" name="zipcode" placeholder="zipcode" class="form-control">
+                </div>
+                <div class="my-2 d-flex justify-content-center">
+                    <input type="submit" value="Add Address" class="btn btn-primary"> 
+                </div>
+                <% if(errors && errors.length>0) {%>
+                    <div class="alert alert-danger ">
+                        <ul>
+                        <% errors.forEach(error=>{ %>
+                            <li><%= error %></li>
+                        <%    })%>
+                        </ul>
+                    </div>
+                <%  }%>
+            </form>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../layouts/footer.ejs') %>

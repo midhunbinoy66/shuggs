@@ -1,0 +1,169 @@
+<%- include('../layouts/adminheader') %>
+<div class="container my-2 vh-100">
+    <div class="row ">
+        <div class="col-md-4 ">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="text-center">
+                            <h3>Admin</h3>
+                        </div>
+                        <div>
+                            <ul class="list-group list-group-flush ">
+                                <li  class="list-group-item" >Sales Report 
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/generatesalesreport" class="text-decoration-none">Generate Sales Report</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >User management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Product management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Category management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Order management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Coupon management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                       
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Category Offer management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allcategoryoffers" class="text-decoration-none">All Category Offers</a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategoryoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                       
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Product Offer management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allproductoffers" class="text-decoration-none">All Product Offers</a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addproductoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                       
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+                        </div>
+    
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="col-md-8">
+            <h1>Generate Sales Report</h1>
+            <div class="row">
+                <div class="col-md-10">
+                    <form action="/api/v1/admin/download-sales-report-pdf" method="post"  class="form-control">
+                        <div class="form-group">
+                            <div>
+                                <label for="startDate">Start Date</label>
+                            </div>
+                            <div>
+                                <input type="date" placeholder="Start Date" class="form-control" name="startDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <label for="endtDate">End Date</label>
+                            </div>
+                            <div>
+                                <input type="date" placeholder="End Date" class="form-control" name="endDate" required>
+                            </div>
+        
+                        </div>  
+                        <div class="mt-2">
+                            <input type="submit" class="btn btn-primary" value="Download Sales Report Pdf ">
+                        </div>
+        
+                    </form>
+
+
+                    <form action="/api/v1/admin/download-sales-report-excel" method="post"  class="form-control my-2">
+                        <div class="form-group">
+                            <div>
+                                <label for="startDate">Start Date</label>
+                            </div>
+                            <div>
+                                <input type="date" placeholder="Start Date" class="form-control" name="startDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <label for="endtDate">End Date</label>
+                            </div>
+                            <div>
+                                <input type="date" placeholder="End Date" class="form-control" name="endDate" required>
+                            </div>
+        
+                        </div>  
+                        <div class="mt-2">
+                            <input type="submit" class="btn btn-primary" value="Download Sales Report Excel">
+                        </div>
+        
+                    </form>
+
+
+
+                  
+
+                      <!-- <button id="excelReportDownloadBtn" onclick="downloadSalesReport()" class="btn btn-primary">Download Sales Report excel</button> -->
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- <script>
+    
+    
+ 
+const downloadSalesReport = async () => {
+    try {
+        const response = await fetch('/api/v1/admin/download-sales-report-excel');
+        const blob = await response.blob();
+        
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'sales-report.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error downloading sales report:', error);
+        // Handle the error (e.g., display an error message)
+    }
+};
+
+
+    
+    </script> -->
+    
+    
+    
+<%- include('../layouts/adminfooter.ejs') %>
+    
+    

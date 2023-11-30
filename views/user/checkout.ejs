@@ -1,0 +1,352 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<div class="container  my-2 ">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>User</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" ><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show addresses</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change passord</a></li>
+                            <li  class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a></li>
+                            </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8 ">
+            
+
+<div class="container   d-flex flex-column justify-content-center ">
+    <div class="container ">
+        <div class="row">
+            <div class="col">
+                <% if(typeof cart !== 'undefined') { %>
+                    <% let sum = [] %>
+                    <div class="card shadow ">
+                        <div class="card-body">
+                            <h5 class="card-title">Product Details</h5>
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                <% cart.items.forEach(item => { %>
+                                    <div class="col">
+                                        <div class="card shadow h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Product: <%= item.product.name %></h5>
+                                                <div class="image-container">
+                                                    <img src="/../productImages/<%= item.product.images[0] %>" class="card-img-top img-fluid rounded-start" alt="Product Image">
+                                                </div>
+                                                <p>Quantity: <%= item.quantity %></p>
+                                                <form action="/api/v1/user/cart" method="get">
+                                                    <button type="submit" class="btn btn-primary ">Update Quantity</button>
+                                                </form>
+                                                <form action="/api/v1/user/cart/delete/<%= item.product._id %>?size=<%= item.size %>&quantity=<%= item.quantity %>" method="post">
+                                                    <button type="submit" class="btn btn-danger mt-1">Delete</button>
+                                                </form>
+                                                <p class="list-group-item mt-1">Size: <%= item.size %></p>
+                                                <p class="list-group-item ">Price: <%=item.product.price %></p>
+                                                <% if(item.offerPrice){ %>
+                                                    <p class="list-group-item mt-1">Offer Price : <%= item.offerPrice %></p>
+                                               <% } %>
+                        
+                                                <% let total = item.quantity * (item.offerPrice?item.offerPrice:item.product.price ) %>
+                                                <p class="list-group-item ">Total: <%= total %></p>
+                                                <% sum.push(total) %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                            <div class="text-center mt-4">
+                                <% if (sum.length > 0) { %>
+                                    <h3>Total Checkout Amount:</h3>
+                                    <h3 id="totalAmount"><%= sum.reduce((accum, current) => accum + current) %></h3>
+                                <% } else { %>
+                                    <h3>Your cart is empty</h3>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Apply Coupon</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="couponCode">Coupon</label>
+                                    <input type="text" name="couponCode" id="couponCode" placeholder="Enter coupon code" class="form-control">
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end my-2 my-sm-0">
+                                    <button id="applyCouponButton" class="btn btn-success">Apply Coupon</button>
+                                    <a href="/api/v1/user/usercoupons" class="btn btn-secondary mx-1">Your Coupons</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+ 
+
+    <form action="/api/v1/user/checkout" method="post" id="yourFormId">
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Address</h5>
+                            <% user.addresses.forEach(address => { %>
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <p><strong><%= address.locality %>, <%= address.city %></strong></p>
+                                                <p><%= address.district %>, <%= address.state %>, <%= address.zipcode %></p>
+                                            </div>
+                                            <div class="col-md-3 d-flex align-items-center justify-content-end">
+                                                <label>
+                                                    <input type="radio" name="addressId" value="<%= address._id %>">
+                                                    <span class="ms-2">Select</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                            <div class="d-flex justify-content-center">
+                                <a href="/api/v1/user/addaddress" class="btn btn-warning">Add New Address</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Select Payment Method</h5>
+                            <div class="row">
+                                <div class="col-md-4">Cash On Delivery</div>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment" id="cashOnDelivery" value="Cash on Delivery">
+                                        <label class="form-check-label" for="cashOnDelivery">Cash On Delivery</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">Razorpay</div>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment" id="razorpay" value="Razorpay">
+                                        <label class="form-check-label" for="razorpay">Razorpay</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">Wallet Payment</div>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment" id="walletPayment" value="Wallet">
+                                        <label class="form-check-label" for="wallet">Wallet</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="paymentMethod" id="paymentMethod" value="">
+                            <input type="hidden" name="cartId" value="<%= cart._id %>">
+                            <button type="submit" class="btn btn-primary mt-3" onclick="handleCheckout(event)">Checkout</button>
+        
+                            <% if (errors && errors.length > 0) { %>
+                                <div class="alert alert-danger mt-3">
+                                    <ul>
+                                        <% errors.forEach(error => { %>
+                                            <li><%= error %></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            <% } %>
+        
+                            <% if(typeof message !== 'undefined') { %>
+                                <div class="alert alert-danger mt-3">
+                                    <ul>
+                                        <li><%= message %></li>
+                                    </ul>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+
+
+
+</div>
+
+        </div>
+        
+
+    </div>
+</div>
+
+    <script>
+        const cartData = <%- JSON.stringify(cart) %>;
+        document.getElementById('applyCouponButton').addEventListener('click', applyCoupon);
+        async function applyCoupon() {
+
+            const couponCode = document.getElementById('couponCode').value;
+
+            const response = await fetch('/api/v1/user/checkout/applycoupon',{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({
+                    couponCode,
+                    cartItems:cartData.items
+                }),
+            });
+
+            const result = await response.json({});
+
+            if(result.success){
+                //update the total 
+                const updatedTotal = result.updatedTotal;
+                const updatedCartItems = result.updatedCartItems;
+                const updatedCartItemsInput = document.createElement('input');
+                updatedCartItemsInput.type='hidden',
+                updatedCartItemsInput.name = 'updatedCartItems',
+                updatedCartItemsInput.value = JSON.stringify(updatedCartItems);
+                document.getElementById('yourFormId').appendChild(updatedCartItemsInput);
+                updateTotalFrontEnd(updatedTotal);
+            }else{
+                alert(result.error);
+            }
+            
+        }
+        function updateTotalFrontEnd(updatedTotal){
+            document.getElementById('totalAmount').innerHTML = updatedTotal;
+        }
+    </script>
+
+
+<script>
+    document.querySelectorAll('input[name="payment"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            document.getElementById('paymentMethod').value = radio.value;
+        });
+    });
+</script>
+
+
+
+<script>
+
+
+function handleCheckout(event) {
+
+            event.preventDefault(); // Prevent form submission
+        
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        
+        if (paymentMethod === 'Razorpay') {
+            initiateRazorpayPayment();
+        } else {
+            document.getElementById('yourFormId').submit();
+            // document.forms[3].submit();
+        }
+        
+
+    }
+
+async function initiateRazorpayPayment() {
+    try {
+        const cartData = <%- JSON.stringify(cart) %>;
+        const selectedAddressId = document.querySelector('input[name="addressId"]:checked').value;
+        // const updatedCartItems = JSON.parse(document.querySelector('input[name="updatedCartItems"]').value) || cartData.items;
+        const updatedCartItemsElement = document.querySelector('input[name="updatedCartItems"]');
+        const updatedCartItems = updatedCartItemsElement ? JSON.parse(updatedCartItemsElement.value) : cartData.items;
+        const response = await fetch('/api/v1/user/checkout/razorpay', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cartId: cartData._id,
+                // calculateCartTotal(cartData.items)
+                cartTotal:  calculateCartTotal(updatedCartItems),
+                addressId: selectedAddressId,
+                updatedCartItems:updatedCartItems
+            }),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result.orderId) {
+                // Redirect to the Razorpay checkout page
+                console.log(result.orderId);
+                window.location.href = `/api/v1/user/razorpay/checkout?orderId=${result.orderId}`;
+            } else {
+                console.error('Failed to initiate Razorpay payment. Server response:', result.error);
+                alert('Failed to initiate Razorpay payment. Server response: ' + JSON.stringify(result));
+            }
+        } else {
+            console.error('Failed to initiate Razorpay payment. Server responded with:', response.status, response.statusText);
+            alert('Failed to initiate Razorpay payment. Server responded with: ' + response.statusText);
+        }
+    } catch (error) {
+        console.error('An error occurred while initiating Razorpay payment:', error);
+        alert('An error occurred while initiating Razorpay payment. Error: ' + JSON.stringify(error));
+    }
+}
+
+
+function calculateCartTotal(items) {
+        return items.reduce((total, item) => {
+        const price = item.discountedPrice || item.product.price;
+        return  parseInt(total + (item.quantity * price))  ;
+    }, 0);
+
+}
+
+
+</script>
+
+
+
+            <style>
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                }
+
+                .container {
+                    flex: 1;
+                }
+
+            </style>
+
+<%- include('../layouts/footer.ejs') %>
+
+
+
+

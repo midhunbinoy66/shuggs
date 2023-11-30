@@ -1,0 +1,200 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col">
+            <div class="card">
+              <div class="text-center">
+                <h3>User</h3>
+              </div>
+              <div>
+                <ul class="list-group list-group-flush ">
+                  <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit
+                      profiles</a></li>
+                  <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show
+                      Orders</a></li>
+                  <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show
+                      addresses</a></li>
+                  <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change
+                      passord</a></li>
+                  <li class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <h1>Welcom User, Your Orders</h1>
+          <% orders.forEach(order=> { %>
+            <div class="card">
+
+              <div class="card-body">
+                <div class="card-title">Order</div>
+                <ul>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">order Id : <%= order._id %>
+                    </li>
+                    <li class="list-group-item">Order Status:<%=order.status %>
+                    </li>
+                    <li class="list-group-item"><a href="/api/v1/user/confirmcancel/<%= order._id %>"
+                        class="btn btn-primary">Cancel Whole order</a></li>
+                        <li class="list-group-item"><a
+                          href="/api/v1/user/downloadinvoice/<%= order._id %>" class="btn btn-success">Download Invoice</a></li>
+                    <div class="card">
+
+                      <div class="card-body">
+                        <ul class="list-group list-group-flush d-flex ">
+                          <% order.products.forEach(item=> { %>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                              <div>
+
+                                <strong>Product Name:</strong>
+                                <%= item.product.name %><br>
+                                  <strong>Quantity:</strong>
+                                  <%= item.quantity %><br>
+                                    <strong>Size:</strong>
+                                    <%= item.size %><br>
+                                      <strong>Product price:</strong>
+                                      <%= item.product.price %><br>
+                                        <strong>Total price:</strong>
+                                        <%= item.product.price * item.quantity%><br>
+                                          <strong>Discounted Price:</strong>
+                                          <%= item.discountedPrice * item.quantity %><br>
+                                            <strong>Product Status:</strong>
+                                            <%= item.status %><br>
+                              </div>
+
+                              <a href="/api/v1/user/singleproduct/<%= item.product._id%>">
+                              
+                                <div>
+                                  <img src="/../productImages/<%= item.product.images[0] %>"
+                                    class="card-img-top img-fluid  rounded-start ">
+                                </div>
+                              </a>
+
+                            </li>
+                            <% if(item.status !== 'cancelled'&& item.status !=='returned') {%>
+                              <li class="list-group-item">
+                                <!-- Button trigger modal --><button type="button" class="btn btn-danger"
+                                  data-bs-toggle="modal" data-bs-target="#staticBackdrop<%= item.product._id%><%= order._id %>">
+                                  Cancel Product
+                                </button>
+                              <% } %>
+
+
+
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop<%= item.product._id%><%= order._id %>" data-bs-backdrop="static"
+                              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                              aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Cancel The Product</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                      aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    Your product shippment will be cancelled, sorry for the inconvenience
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                      data-bs-dismiss="modal">Close</button>
+                                    <a
+                                      href="/api/v1/user/singleproductcancel/<%= item.product._id%>?orderId=<%= order._id %>">
+                                      <button type="button" class="btn btn-primary">Confirm Cancellation</button>
+                                    </a>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                          
+                            <% if(item.status !== 'returned' && item.status==='delivered' ){ %>
+                            <li class="list-group-item"><a
+                                href="/api/v1/user/singleproductreturn/<%= item.product._id%>?orderId=<%= order._id %>" class="btn btn-warning">Return
+                                Product</a></li>
+                           <% } %> 
+                                
+                            <% }); %>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <p class="card-footer text-body-secondary"><strong>Shipping Address:</strong>
+                      <%= order.address.locality %>, <%= order.address.city %>, <%= order.address.state %>, <%=
+                              order.address.zipcode %>
+                    </p>
+                  </ul>
+                </ul>
+
+              </div>
+            </div>
+
+
+
+            <% }); %>
+
+        </div>
+        <% if(typeof message !== 'undefined'){ %>
+          <div class="alert alert-danger">
+              <li ><%= message %></li>
+                          
+          </div> 
+          <% } %>
+
+      </div>
+
+
+    </div>
+  </div>
+
+
+
+  <style>
+    .card-img-top {
+      width: 100%;
+      height: 20vh;
+      object-fit: contain;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      flex: 1;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      /* Ensure the body takes up at least the full viewport height */
+    }
+
+    main {
+      flex: 1;
+      /* Allow the main content to grow and take up remaining space */
+    }
+
+    footer {
+      flex-shrink: 0;
+      /* Prevent the footer from shrinking */
+    }
+  </style>
+
+  <%- include('../layouts/footer.ejs') %>

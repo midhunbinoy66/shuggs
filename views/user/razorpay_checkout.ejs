@@ -1,0 +1,61 @@
+<%- include('../layouts/header.ejs') %>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<!-- razorpay_checkout.ejs -->
+<script>
+    var orderId = '<%= orderId %>';
+    var options = {
+        key: 'rzp_test_XTV4tqVFhaTx6m',
+        amount: 100, // Amount in paise, update based on your requirement
+        currency: 'INR', // Update this based on your currency
+        name: 'Shuggs E-Business.com',
+        description: 'Purchase Description',
+        order_id: orderId,
+        handler: function (response) {
+            // Handle successful payment response
+            window.location.href = '/api/v1/user/razorpay/checkout/success?orderId=' + orderId;
+            console.log(response);
+            // Redirect or perform further actions as needed
+        },
+        prefill: {
+            name: 'Midhun Binoy',
+            email: 'midhunbinoy66@gmail.com',
+            contact: '+919656305170',
+        },
+        notes: {
+            address: 'Your Address',
+        },
+        theme: {
+            color: '#F37254',
+        },
+    };
+    var rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (response) {
+        // Handle failed payment
+        console.error(response.error.code, response.error.description);
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        rzp.open();
+    });
+</script>
+
+<div class="container-fluid bg-dark vh-100">
+    <h1 class="text-white">Please Complete Payment</h1>
+</div>
+
+
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .container-fluid {
+        flex: 1;
+    }
+</style>
+
+
+<%- include('../layouts/footer.ejs') %>

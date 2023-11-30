@@ -1,0 +1,158 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+
+
+<div class="container">
+    <div class="row">
+      <!-- Sidebar Section -->
+      <div class="col-md-3">
+        <div class="container my-5 text-white">
+          <form action="/api/v1/user/productlist" method="get">
+            <!-- Category Filter -->
+            <div class="mb-3">
+              <label for="category" class="form-label">Category:</label>
+              <select id="category" name="category" class="form-select">
+                <option value="">All Categories</option>
+                <option value="Formal" <%= filter.category &&filter.category.toString() === '65406840eed8e4ffb4cd13ab'?'selected':'' %> >Formal</option>
+                <option value="Outdoor" <%= filter.category &&filter.category.toString() === '65430e657faefc57830d844d'?'selected':'' %>>Outdoor</option>
+                <option value="Athletic" <%= filter.category &&filter.category.toString() === '65430e577faefc57830d844a'?'selected':'' %>>Athletic</option>
+                <option value="Casual" <%= filter.category &&filter.category.toString() === '6540681aeed8e4ffb4cd13a9'?'selected':'' %>>Casual</option>
+              </select>
+            </div>
+            
+            <!-- Brand Filter -->
+            <div class="mb-3">
+              <label for="brand" class="form-label">Brand:</label>
+              <select id="brand" name="brand" class="form-select">
+                <option value="">All Brands</option>
+                <option value="Nike" <%= filter.brand === 'Nike' ? 'selected':''  %>>Nike</option>
+                <option value="Puma" <%= filter.brand === 'Puma'?'selected':'' %>>Puma</option>
+                <option value="Adidas" <%= filter.brand==='Adidas'?'selected':''%>>Adidas</option>
+                <option value="New Balanace" <%= filter.brand === 'New Balance'?'selected':'' %> >New Balance</option>
+              </select>
+            </div>
+            
+            <!-- Gender Filter -->
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender:</label>
+              <select id="gender" name="gender" class="form-select">
+                <option value="">All Gender</option>
+                <option value="male" <%= filter.gender === 'male' ?'selected':'' %>   >Male</option>
+                <option value="female" <%= filter.gender === 'female' ? 'selected':'' %>  >Female</option>
+                <option value="unisex" <% filter.gender === 'unisex' ? 'selected' :'' %>>Unisex</option>
+              </select>
+            </div>
+            
+            <!-- Price Filters -->
+            <div class="mb-3">
+              <label for="minPrice" class="form-label">Min Price:</label>
+              <input type="number" id="minPrice" name="minPrice" placeholder="Min Price" class="form-control" value="<%= filter.price && filter.price['$gte'] ?filter.price['$gte']:'' %>">
+            </div>
+            
+            <div class="mb-3">
+              <label for="maxPrice" class="form-label">Max Price:</label>
+              <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price" class="form-control" value="<%= filter.price && filter.price['$lte']?filter.price['$lte']:'' %>">
+            </div>
+            
+            <!-- Filter Submit Button -->
+            <div>
+              <button type="submit" class="btn btn-primary my-2">Apply Filters</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Main Content Section -->
+      <div class="col-md-9">
+        <div class="container my-5">
+          <h1 class="text-white">Latest Arrivals</h1>
+          <div class="row">
+            <!-- Product Cards -->
+            <% products.forEach(product => { %>
+              <div class="col-md-4 mb-3">
+                <div class="card shadow h-100">
+                  <img src="./productImages/<%= product.images[0] %>" class="card-img-top img-fluid" alt="<%= product.name %>">
+                  <div class="card-body">
+                    <div class="card-title"><%= product.name %></div>
+                    <p>Price:<%= product.price %> </p>
+                    <% if(product.offerPrice !== product.price) {%>
+                      <p class="text-success fw-bold">Offer Price: <%= product.offerPrice %></p>
+                    <% }else{%>
+                      <p class="text-warning">Best Seller</p>
+                    <%}%>
+                    <input type="hidden" name="id" value="<%= product._id %>">
+                    <a href="/api/v1/user/singleproduct/<%= product._id %>" class="btn btn-primary">View Product</a>
+                    <a href="/api/v1/user/addtowishlist/<%= product._id %>" ><i class="fa-solid fa-heart btn btn-outline" style="color: #e864b1;" ></i></a>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+            
+            <!-- Pagination -->
+            <!-- <div class="col-md-12">
+              <div class="d-flex justify-content-center">
+                <ul class="pagination">
+                  <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                  <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                </ul>
+              </div>
+            </div> -->
+            <div class="pagination">
+              <% for(let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><%= i %></a>
+              <% } %>
+            </div>
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    .card-img-top {
+      width: 100%;
+      height: 30vh;
+      object-fit: contain;
+    }
+  
+    body {
+      background-color: rgb(2, 2, 2);
+    }
+    /* Basic pagination styles */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #fcfcfc;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #f5f5f5;
+  color: #fff;
+  border-color: #ffffff;
+}
+
+  </style>
+  
+
+
+
+
+
+    
+<%- include('../layouts/footer.ejs') %>
+
+
+
+

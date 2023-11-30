@@ -1,0 +1,250 @@
+<%- include('../layouts/adminheader.ejs') %>
+<div class="container ">
+    <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>Admin</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" >User management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Product management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Category management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Order management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Coupon management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                   
+                                </ul>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <div class="col">
+              <h1>Edit product</h1>
+
+              <form action="/api/v1/admin/editproduct/<%= product._id %>" method="POST" enctype="multipart/form-data" class="form-control">
+                  <div class="form-group text-truncate">
+                      <label for="">Product Name</label>
+                      <input type="text" id="name" name="name" value="<%=product.name%>" required class="form-control" minlength="5" >
+                  </div>
+                 <div class="form-group ">
+                  <label for="">Price</label>
+                  <input type="number" id="price" name="price" value="<%=product.price%>" required class="form-control"> 
+                 </div>
+                 
+                <div class="form-group my-3" >
+                    <select name="category" id="" class="form-control">
+                      <option value="">Category</option>
+                      <option value="Outdoor" <%= product.category.toString() == '65430e657faefc57830d844d'? 'selected':'' %>>Outdoor</option>
+                      <option value="Athletic" <%= product.category.toString() == '65430e577faefc57830d844a'? 'selected':'' %>>Athletic</option>
+                      <option value="Casual" <%= product.category.toString() == '6540681aeed8e4ffb4cd13a9'? 'selected':'' %>>Casual</option>
+                      <option value="Formal" <%= product.category.toString() == '65406840eed8e4ffb4cd13ab'? 'selected':'' %>>Formal</option>
+                    </select>
+
+                    <!-- <label for="price">Category:</label>
+                    <input type="text" id="category" name="category" required class="form-control"> -->
+                </div>
+                
+                <div class="form-group my-3" >
+                    <select name="gender" id="" class="form-control">
+                      <option value="">Gender</option>
+                      <option value="male" <%= product.gender === 'male'?'selected':''  %>>Male</option>
+                      <option value="female" <%= product.gender === 'female'?'selected':''  %>>Female</option>
+                      <option value="unisex" <%= product.gender === 'unisex'?'selected':''  %>>Unisex</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group my-3" >
+                    <select name="brand" id="" class="form-control">
+                      <option value="">Brand</option>
+                      <option value="Nike" <%= product.brand === 'Nike'?'selected':'' %>>Nike</option>
+                      <option value="Puma" <%= product.brand === 'Puma'?'selected':'' %>>Puma</option>
+                      <option value="Adidas" <%= product.brand === 'Adidas'?'selected':'' %>>Adidas</option>
+                      <option value="New Balance" <%= product.brand === 'New Balanace'?'selected':'' %>>New Balance</option>
+                    </select>
+                </div>
+
+                <div id="sizeVariantsContainer" class="d-flex flex-column">
+                    <% product.sizes.forEach((size, index) => { %>
+                        <label for="">Size</label>
+                        <input type="text" name="sizes[]" value="<%= size.size %>" required>
+                
+                        <label for="">Quantity</label>
+                        <input type="number" name="quantities[]" value="<%= size.quantity %>" required>
+                    <% }); %>
+                </div>
+
+                  <div class="form-group my-2">
+                    <button type="button" id="addSizeVariant" class="btn btn-primary">Add Size Variant</button>
+                  </div>
+
+
+
+                 <div class="form-group">
+                  <label for="">Upload images</label>
+                  <input type="file" id="image" name="images" accept="image/*" multiple  required class="form-control" value="<%=product.images%>">
+                  <div id="image-preview-container" class="mt-2">
+                    <% product.images.forEach(imageUrl => { %>
+                        <div>
+                            <img src="/productImages/<%= imageUrl %>" class="image-preview">
+                            <button type="button" class="btn btn-danger btn-sm mx-2 remove-image">Remove</button>
+                        </div>
+                    <% }); %>
+                </div>
+
+                </div>
+                 <div class="form-group">
+                  <label for="">Description</label>
+                  <textarea name="description" id="description" cols="20" rows="5" class="form-control">"<%=product.description%>"</textarea>
+                 </div>
+                  
+                 <div class="form-group">
+                  <input type="hidden" name="productId" value="<%=product._id%>"><br>
+                  <button type="submit" class="btn btn-primary">edit Product</button>
+                 </div>
+              
+              </form>
+
+                          
+            <% if (errors && errors.length > 0) { %>
+                <div class="alert alert-danger">
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+            <% if(typeof message !== 'undefined'){ %>
+                <div class="alert alert-danger">
+                    <li ><%= message %></li>
+                </div> 
+                <% } %> 
+      
+        
+              
+            </div>
+          </div>
+            
+
+        </div>
+        
+  
+    </div>
+  </div>
+  
+
+<script>
+        const sizeVariantsContainer = document.getElementById('sizeVariantsContainer');
+    const addSizeVariantButton = document.getElementById('addSizeVariant');
+
+    addSizeVariantButton.addEventListener('click', () => {
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.name = 'sizes[]';
+        sizeInput.placeholder = 'Size';
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'number';
+        quantityInput.name = 'quantities[]';
+        quantityInput.placeholder = 'Quantity';
+
+        sizeVariantsContainer.appendChild(sizeInput);
+        sizeVariantsContainer.appendChild(quantityInput);
+    });
+</script>
+
+<script>
+    document.getElementById('image').addEventListener('change', handleImageChange);
+
+    function handleImageChange(event) {
+        const previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        const files = event.target.files;
+        for (const file of files) {
+            const imageElement = document.createElement('img');
+            imageElement.src = URL.createObjectURL(file);
+            imageElement.classList.add('image-preview');
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'mx-2');
+            removeButton.addEventListener('click', () => removeImage(file));
+
+            const previewWrapper = document.createElement('div');
+            previewWrapper.appendChild(imageElement);
+            previewWrapper.appendChild(removeButton);
+            previewContainer.appendChild(previewWrapper);
+        }
+    }
+
+    function removeImage(file) {
+    const input = document.getElementById('image');
+    const newFiles = Array.from(input.files).filter(f => f !== file);
+
+    const newFileList = new DataTransfer();
+    newFiles.forEach(file => {
+        newFileList.items.add(file);
+    });
+
+    input.files = newFileList.files;
+
+    const changeEvent = new Event('change', { bubbles: true });
+    input.dispatchEvent(changeEvent);
+}
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('remove-image')) {
+        const imageUrlToRemove = event.target.previousElementSibling.src;
+
+        event.target.parentElement.remove();
+    }
+});
+</script>
+
+
+<style>
+    .image-preview {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+</style>
+
+
+
+
+<%- include('../layouts/adminfooter.ejs') %>

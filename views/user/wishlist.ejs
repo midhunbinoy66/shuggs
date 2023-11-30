@@ -1,0 +1,116 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+
+<div class="container  my-2">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="text-center">
+                    <h3>User</h3>
+                </div>
+                <div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
+                        <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                        <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
+                        <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">Change Password</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="container">
+                <div class="row">
+                    <% if(typeof userWishlist !== 'undefined' && userWishlist.items.length > 0 ){ %>
+                        <% userWishlist.items.forEach(item => { %>
+                            <div class="col-md-4 col-sm-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="image-container">
+                                        <img src="/../productImages/<%= item.product.images[0] %>" class="card-img-top img-fluid rounded-start" alt="Product Image">
+                                    </div>
+                                    <div class="card-body">
+                                        <div><%= item.product.name %></div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">Price: <%= item.product.price %></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-footer">
+                                        <form action="/api/v1/user/wishlist/remove/<%= item.product._id %>" method="post">
+                                            <button type="submit" class="btn btn-danger mt-2">Remove </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p>Hola! Your wishList is empty</p>
+                                    <a href="/api/v1/user/userdashboard" class="btn btn-secondary">Please add products to wishlist</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+            
+                    <% if(typeof message !== 'undefined'){ %>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li><%= message %></li>
+                                </ul>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Body and container styles */
+
+    body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+}
+
+main {
+  flex: 1; /* Allow the main content to grow and take up remaining space */
+}
+
+footer {
+  flex-shrink: 0; /* Prevent the footer from shrinking */
+}
+
+    .image-container {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Additional styles for product image */
+
+
+    .image-container {
+        height: 200px; /* Set a fixed height for the image container */
+        overflow: hidden; /* Hide any overflow to keep the container size consistent */
+    }
+
+    .image-container img {
+        object-fit: contain; /* Ensure the image covers the entire container */
+        width: 100%; /* Make the image take up the full width of its container */
+        height: 100%; /* Make the image take up the full height of its container */
+    }
+
+    @media (max-width: 767px) {
+        /* Add margin or padding to the bottom of the container */
+        .container {
+            margin-bottom: 100px; /* Adjust the value based on the space needed */
+        }
+    }
+
+</style>
+
+<%- include('../layouts/footer.ejs') %>

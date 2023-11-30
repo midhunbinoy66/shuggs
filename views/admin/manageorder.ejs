@@ -1,0 +1,157 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+<div class="container my-2 vh-100">
+    <div class="row ">
+        <div class="col-md-4 ">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="text-center">
+                            <h3>Admin</h3>
+                        </div>
+                        <div>
+                            <ul class="list-group list-group-flush ">
+                                <li  class="list-group-item" >User management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Product management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Category management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Order management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Coupon management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                       
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+                        </div>
+    
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="col-md-8">
+                
+<div class="container">
+    <h1>Manage Orders</h1>
+
+    <div class="row">
+        <div class="col ">
+            <div class="card p-3">
+                <ul  class="list-group list-group-flush ">
+                    <li class="list-group-item fw-bold ">Order Id : <%= order._id %></li>
+                    <li class="list-group-item "><span class="fw-bold">Address:</span><%= order.address.locality %>,<%= order.address.city %>,<%= order.address.district %>,<%= order.address.state %>,<%= order.address.zipcode%>  </li>
+                    <ul><% order.products.forEach(item => { %>
+                        <li class="list-group-item"> <span class="fw-bold">Name of the Product: </span> <%= item.product.name %></li>
+                        <li  class="list-group-item"> <span class="fw-bold">Price: </span><%= item.discountedPrice%></li>
+                        <li  class="list-group-item"><span class="fw-bold">Quantity: </span><%= item.quantity %></li>
+                     
+                     <li class="list-group-item"> <div>
+                          
+                            <form action="/api/v1/admin/manageorder/singleproduct/<%= item.product._id %>?orderId=<%= order._id %>" method="post">
+                                <div class="list-group-item">
+                                    <label for="">cancelled
+                                        <input type="radio" name="orderStatus"  value="cancelled" <% if(item.status === "cancelled")  { %>checked<% } %> >
+                                    </label>
+                                </div>
+                                <div class="list-group-item">
+                                    <label for="">payment_pending
+                                        <input type="radio" name="orderStatus" value="pending" <% if(item.status === "pending")  { %>checked<% } %> >
+                                    </label>
+                                </div>
+                                <div class="list-group-item">
+                                    <label for="">shipped
+                                        <input type="radio" name="orderStatus" value="shipped"<% if(item.status === "shipped")  { %>checked<% } %>> 
+                                    </label>
+                                </div>
+
+                                <div class="list-group-item">
+                                    <label for="">Returned
+                                        <input type="radio" name="orderStatus" value="returned"<% if(item.status === "returned")  { %>checked<% } %>> 
+                                    </label>
+                                </div>
+
+
+                                <div class="list-group-item">
+                                    <label for="">delivered
+                                        <input type="radio" name="orderStatus" value="delivered" <% if(item.status === "delivered")  { %>checked<% } %>> 
+                                    </label>
+                                </div>
+
+                                <div class="list-group-item">
+                                    <input type="submit" value="Update Product Status" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div> </li>
+                       
+                   <% }); %></ul>
+                </ul>
+                
+            <form action="/api/v1/admin/manageorder/<%= order._id %>" method="post" class="form-control my-1">
+                <div>
+                    <p class="fw-bold">Update order Status</p>
+                </div>  
+                <div class="list-group-item">
+                    <label for="">Paid
+                        <input type="radio" name="status"  value="paid" <% if(order.status === "paid")  { %>checked<% } %> >
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <label for="">cancelled
+                        <input type="radio" name="status"  value="cancelled" <% if(order.status === "cancelled")  { %>checked<% } %> >
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <label for="">payment_pending
+                        <input type="radio" name="status" value="payment_pending" <% if(order.status === "payment_pending")  { %>checked<% } %> >
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <label for="">shipped
+                        <input type="radio" name="status" value="shipped"<% if(order.status === "shipped")  { %>checked<% } %>> 
+                    </label>
+                </div>
+                <div class="list-group-item">
+                    <label for="">delivered
+                        <input type="radio" name="status" value="delivered" <% if(order.status === "delivered")  { %>checked<% } %>> 
+                    </label>
+                </div >
+
+                <div class="mt-2">
+                    <input type="submit" value="Update Order Status" class="btn btn-primary">
+                </div>
+ 
+            </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<%- include('../layouts/adminfooter.ejs') %>

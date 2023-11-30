@@ -1,0 +1,230 @@
+<%- include('../layouts/logginheader.ejs') %>
+<div class="container my-2 " >
+    <div class="row ">
+        <div class="col-md-12">
+            <div id="carouselExampleIndicators" class="carousel slide ">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner" >
+                  <div class="carousel-item active">
+                    <img src="BannerImages/Banner1.jpg" class="d-block bannerImg"  alt="..."  >
+                    <div class="card-img-overlay my-auto mx-auto">
+                      <h1 class="card-title text-white">Find Your Best Deals</h1>
+                      <h2 class="card-title text-white">On Shuggs.com</h2>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <img src="BannerImages/banner2.webp" class="d-block bannerImg " alt="...">
+                    <div class="card-img-overlay my-auto mx-auto">
+                      <h1 class="card-title text-white">Featured Product</h1>
+                      <h2 class="card-title text-white">Nike Vomero</h2>
+                    </div>
+                  </div>
+                  <div class="carousel-item"  >
+                    <img src="BannerImages/Banner3.jpeg" class="d-block bannerImg" alt="...">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <div class="">
+          <a href="/api/v1/user/productlist" class="btn btn-secondary p-3">View Trending Products at Shuggs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col d-md-flex justify-content-evenly">
+      <a href="/api/v1/user/productlist?category=&brand=Nike&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+        <div class="card">
+        <img src="BannerImages/Nike logo.jpg" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">Nike</div>
+        </div>
+      </div>
+      </a>
+      <a href="/api/v1/user/productlist?category=&brand=Adidas&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold"> 
+        <div class="card">
+        <img src="BannerImages/adidaslogo.webp" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">Adidas</div>
+        </div>
+      </div>
+
+      </a>
+     <a href="/api/v1/user/productlist?category=&brand=Puma&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+      <div class="card">
+        <img src="BannerImages/pumaLogo.jpg" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">Puma</div>
+        </div>
+      </div>
+
+     </a>
+     <a href="/api/v1/user/productlist?category=&brand=New Balance&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+      <div class="card">
+        <img src="BannerImages/newBalance.jpg" class="brandlogo" alt="">
+        <div class="card-body">
+          <div class="card-title text-center">New Balance</div>
+        </div>
+      </div>
+     </a>
+
+    </div>
+  </div>
+</div>
+
+  
+<div class="container my-2 shadow">
+<div class="row">
+  <h1 class="text-white">Browse By Catgories</h1>
+</div>
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+      <a href="/api/v1/user/productlist?category=Outdoor&brand=&minPrice=&maxPrice=">
+        <div class="card  h-100">
+          <img src="BannerImages/outdoor.webp" class="card-img-top gridImage" alt="...">
+          <div class="card-img-overlay my-auto mx-auto">
+            <h1 class="card-title text-dark">Outdoor Shoes</h1>
+            <h4 class="card-title text-secondary">upto 30% off</h4>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col">
+      <a href="/api/v1/user/productlist?category=Formal&brand=&minPrice=&maxPrice=">
+        <div class="card h-100">
+          <img src="BannerImages/Formal.webp" class="card-img-top gridImage" alt="...">
+          <div class="card-img-overlay my-auto mx-auto">
+            <h1 class="card-title text-dark">Formal Shoes</h1>
+            <h4 class="card-title text-secondary">upto 80% off</h4>
+          </div>
+        </div>
+      </a>
+
+    </div>
+    <div class="col">
+      <a href="/api/v1/user/productlist?category=Athletic&brand=&minPrice=&maxPrice=">
+        <div class="card h-100">
+          <img src="BannerImages/Athletic.webp" class="card-img-top gridImage" alt="...">
+          <div class="card-img-overlay my-auto mx-auto">
+            <h1 class="card-title text-dark">Athletic Shoes</h1>
+            <h4 class="card-title text-secondary">Flat 50%</h4>
+          </div>
+        </div>
+      </a>
+
+    </div>
+    <div class="col">
+      <a href="/api/v1/user/productlist?category=Casual&brand=&minPrice=&maxPrice=">
+        <div class="card h-100">
+          <img src="BannerImages/casual.webp" class="card-img-top gridImage" alt="...">
+          <div class="card-img-overlay my-auto mx-auto">
+            <h1 class="card-title text-dark">Casual Shoes</h1>
+            <h4 class="card-title text-secondary">upto 30% off</h4>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <div class="col d-md-flex justify-content-evenly">
+      <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=male" class="text-decoration-none text-dark fw-bold">
+        <div class="card">
+        <img src="BannerImages/MEN.jpg" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">MEN</div>
+        </div>
+      </div>
+      </a>
+      <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=female" class="text-decoration-none text-dark fw-bold"> 
+        <div class="card">
+        <img src="BannerImages/WOMEN.jpg" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">WOMEN</div>
+        </div>
+      </div>
+
+      </a>
+     <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=unisex" class="text-decoration-none text-dark fw-bold">
+      <div class="card">
+        <img src="BannerImages/UNISEX.jpg" alt="" class="brandlogo">
+        <div class="card-body">
+          <div class="card-title text-center">UNISEX</div>
+        </div>
+      </div>
+
+     </a>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+
+.bannerImg{
+width: 100%;
+height: 50vh;
+object-fit: contain;
+}
+
+.gridImage{
+width: 100%;
+height: 40vh;
+object-fit: contain;
+}
+
+body{
+  background-color: rgb(2, 2, 2);
+}
+
+
+.brandlogo{
+  width:100;
+  height: 20vh;
+  object-fit: contain;
+}
+
+      .container {
+overflow-x: hidden;
+}
+
+
+
+</style>
+
+<%- include('../layouts/footer.ejs') %>

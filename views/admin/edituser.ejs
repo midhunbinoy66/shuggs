@@ -1,0 +1,90 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+<div class="container ">
+    <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>Admin</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" >User management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Product management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Category management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Order management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                </ul>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h2>Edit User</h2>
+            <form action="/api/v1/admin/usermanage/edituser/<%= user._id %>" method="POST" class="form-control" >
+                
+                <div class="form-group">
+                <label for="name" class="fw-bold">User Name</label>
+                <p><%=user.name%></p>
+                </div> 
+        
+                <div class="form-group">
+                    <label for="description" class="fw-bold">Email</label>
+                    <p><%=user.email%></p>
+                </div> 
+               
+        
+                <div class="form-group ">
+                    <label for="description" class="fw-bold">Mobile</label>
+                    <p><%=user.mobile%></p>
+                    
+                </div> 
+        
+                <div class="form-group">
+                    <label for="userBlocked">Blocked:</label>
+                    <input type="radio" id="userBlockedTrue" name="blocked"  value="true" <%= user.blocked ? 'checked' : '' %>  >
+                    <label for="userBlockedTrue">True</label>
+                    <input type="radio" id="userBlockedFalse" name="blocked"  value="false" <%= !user.blocked ? 'checked' : '' %>>
+                    <label for="userBlockedFalse">False</label>
+                </div>
+        
+        
+                <input type="hidden" name="userId" value="<%=user._id%>">
+        
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary my-2">edit User</button>
+                </div>
+                
+            </form>
+        </div>
+        
+  
+    </div>
+  </div>
+  
+
+
+<%- include('../layouts/adminfooter.ejs') %>

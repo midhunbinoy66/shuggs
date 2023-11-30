@@ -1,0 +1,103 @@
+<%- include('../layouts/logginheader.ejs') %>
+
+<!-- 
+<div class="container-fluid vh-100 ">
+    <div class="row ">
+        <div class="col vh-100 d-flex flex-column justify-content-center align-items-center">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4">
+                    <img src="/BannerImages/orderSuccess.png" class="img-fluid rounded-start " alt="..." style="object-fit:cover; width: 100%;">
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">Order Placed</h5>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">OrderId : <%= order._id %></li>
+                        <li class="list-group-item">Address : <p class="card-footer text-body-secondary"><strong>Shipping Address:</strong> <%= order.address.locality %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.zipcode %></p></li>
+                        <li class="list-group-item">Products :
+                        <% order.products.forEach(product => { %>
+                        <span> <%= product.product.name ,%></span>                            
+                       <% }); %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <h1 class="text-center text-white">Order success</h1>
+            <a href="/api/v1/user/userdashboard" class="btn btn-primary">Back to home</a>
+        </div>
+    </div>
+
+</div> -->
+
+
+<div class="container  my-2 ">
+  <div class="row">
+      <div class="col-md-4 g-0">
+        <div class="card">
+          <img src="/BannerImages/orderSuccess.webp" alt="" class="img-card-img-top img-fluid">
+        </div>
+      </div>
+      <div class="card col-md-8 " style="max-width: 840px;">
+          <div class="card-body">
+            <h2 class="card-title">Order Placed</h2>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">OrderId : <%= order._id %></li>
+              <li class="list-group-item">Address : <p class="card-footer text-body-secondary"><strong>Shipping Address:</strong> <%= order.address.locality %>, <%= order.address.city %>, <%= order.address.state %>, <%= order.address.zipcode %></p></li>
+              <li class="list-group-item">Products :
+              <div class="row g-1">
+                <% order.products.forEach(product => { %>
+                  <div class="card col-md-4 ">
+                    <div class="image-container mx-1">
+                    <span> <%= product.product.name ,%></span>
+                      <img src="../productImages/<%= product.product.images[0] %>" alt="" class="product-img">
+                    </div>   
+                  </div>
+                           
+               <% }); %>
+              </div>
+              </li>
+            </ul>
+          </div>
+      </div>
+  </div>
+  <h1 class="text-center text-white">Order success</h1>
+  <div class="d-flex justify-content-center">
+    <a href="/api/v1/user/userdashboard" class="btn btn-primary">Back to home</a>
+  </div>
+
+</div>
+
+<style>
+
+.image-container{
+  max-width: 200px;
+}
+.product-img{
+  width: 100%;
+}
+
+body {
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                    background-color: rgb(17, 17, 17);
+                }
+
+                .container {
+                    flex: 1;
+                }
+</style>
+<!-- 
+
+<script>
+    setTimeout(() => {
+    window.location.href ='/api/v1/user/userdashboard'        
+    }, 5000);
+</script> -->
+
+
+
+<%- include('../layouts/footer.ejs') %>

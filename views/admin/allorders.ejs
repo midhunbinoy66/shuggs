@@ -1,0 +1,118 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+
+<div class="container my-2 vh-100">
+    <div class="row ">
+        <div class="col-md-4 ">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="text-center">
+                            <h3>Admin</h3>
+                        </div>
+                        <div>
+                            <ul class="list-group list-group-flush ">
+                                <li  class="list-group-item" >User management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Product management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Category management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Order management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                    </ul>
+                                </li>
+                                <li  class="list-group-item" >Coupon management
+                                    <ul class="list-group list-group-flush ">
+                                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                       
+                                    </ul>
+                                </li>
+                                
+                            </ul>
+                        </div>
+    
+                    </div>
+                </div>
+                </div>
+
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col">
+                    <h1>All orders</h1>
+                    <div class="table-responsive">
+                        
+<table class="table table-sm"">
+    <th>Order Id</th>
+    <th>Order Status</th>
+    <th>Manage Order</th>
+    <th>Cancel Order</th>
+    <% orders.forEach(order => { %>
+        <tr>
+            <td><%= order._id %></td>
+            <td><%= order.status %></td>
+            <td><a href="/api/v1/admin/manageorder/<%= order._id%>" class="text-decoration-none">Manage Order</a> </td>
+            <td><a href="/api/v1/admin/allorders/<%= order._id%>" class="text-decoration-none">Cancel Order</a></td>
+        </tr>
+    
+    
+    <% }); %>
+    
+</table>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="pagination">
+                <% for(let i = 1; i <= totalPages; i++) { %>
+                  <a href="/api/v1/admin/allorders?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><%= i %></a>
+                <% } %>
+              </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+<style>
+    .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #333;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+</style>
+<%- include('../layouts/adminfooter.ejs') %>

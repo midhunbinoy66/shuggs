@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script>
+  async function getCartItemCount(){
+
+    try {
+      const response = await fetch('/api/v1/user/cartcount');
+      if(!response.ok){
+        throw new Error('network response was not ok')
+      }
+
+      const result = await response.json();
+      return result.cartCount;
+    } catch (error) {
+      
+      console.log(error.message)
+    }
+
+}
+
+async function updateCartCountFromBackend(){
+  const cartCount = await getCartItemCount();
+  if(cartCount>=1){
+    updateCartCount(cartCount);
+  }
+ 
+}
+
+
+function updateCartCount(cartCount){
+  const cartCountElement = document.getElementById('cartCount');
+  cartCountElement.textContent = cartCount;
+}
+updateCartCountFromBackend();
+
+
+
+
+
+
+async function getWishlistCount(){
+  try {
+    
+    const response = await fetch('/api/v1/user/wishlistcount');
+    const result = await response.json();
+    if(!result.success){
+      console.log('error in backend to fetch wishlist data');
+    }
+    const wishlistCount = result.wishlistCount;
+    displayWishlistCount(wishlistCount);
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+function displayWishlistCount(wishlistCount){
+if(wishlistCount>0){
+  const wishlistSpan = document.getElementById('wishlistCount');
+wishlistSpan.textContent = wishlistCount;
+}
+
+
+}
+getWishlistCount();
+
+</script>
+
+ <title>Shuggs.Ecom</title>
+  </head>
+  <!-- <nav class="navbar bg-body-tertiary bg-dark ">
+    <div class="container-fluid d-flex justify-content-between">
+        <div  class="d-none d-md-block ">
+          <a class="navbar-brand text-white" href="/api/v1/user/userdashboard">Shuggs.com</a>
+        </div >
+        <div>
+          <form class="d-flex" role="search" action="/api/v1/user/search" method="GET">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"  name="search"> 
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+        <div>
+          <a class="navbar-brand text-white" href="/api/v1/user/userhome" >User</a> 
+          <a class="navbar-brand text-white" href="/api/v1/user/cart" >Cart</a>  
+          <a class="navbar-brand text-white" href="/api/v1/user/userdashboard">Home</a>
+            <a class="navbar-brand text-white" href="/api/v1/user/logout">Logout</a>
+            
+        </div>
+    </div>
+  </nav> -->
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
+    <div class="container-fluid">
+      <!-- Brand/logo (visible on md screens and above) -->
+      <a class="navbar-brand d-none d-md-block" href="/api/v1/user/userdashboard">Shuggs.com</a>
+  
+      <!-- Toggler/collapsible button for smaller screens -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+  
+      <!-- Navbar links (collapsible content) -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/api/v1/user/userhome">User</a>
+          </li>
+          <li class="nav-item">
+            <div class="cartBadge " style="position: relative;">
+              <a class="nav-link" href="/api/v1/user/cart">Cart</a>
+              <span id="cartCount" class="text-white fw-bold" style="position: absolute; top:-6px; right:0px ;  padding: 4px 8px;" ></span>
+            </div>
+
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/v1/user/userdashboard">Home</a>
+          </li>
+          <li class="nav-item">
+            <div class=" wishlistBadge" style="position: relative;">
+              <a class="nav-link" href="/api/v1/user/wishlist">Wishlist</a>
+              <span id="wishlistCount" class="text-white fw-bold" style="position: absolute; top:-6px; right:0px ;  padding: 4px 8px;"></span>
+              </div>
+
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/v1/user/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Search form -->
+      <div class="d-none d-md-block">
+        <form class="d-flex" role="search" action="/api/v1/user/search" method="GET">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <body>
+
+  <main>

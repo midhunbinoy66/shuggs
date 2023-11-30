@@ -1,0 +1,90 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+
+<div class="container ">
+    <div class="row">
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="text-center">
+                        <h3>Admin</h3>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush ">
+                            <li  class="list-group-item" >User management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Product management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Category management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                    <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Order management
+                                <ul class="list-group list-group-flush ">
+                                    <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                </ul>
+                            </li>
+                            <li  class="list-group-item" >Coupon management
+                              <ul class="list-group list-group-flush ">
+                                  <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                  <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                 
+                              </ul>
+                          </li>
+                            
+                            
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <h1>Manage Categories</h1>
+                <div class="table-responsive">
+                  <table class="table">
+                    <th>Name</th>
+                    <th class="d-none d-md-table-cell" ">Description</th>
+                    <th>Edit category</th>
+                    <th>Delete category</th>
+                      <% categories.forEach(category => { %>
+                      <tr>
+                          <td><%= category.name %></td>
+                          <td class="d-none d-md-table-cell" ><%= category.description %></td>
+                          <td><a href="/api/v1/admin/categorymanage/editcategory/<%= category._id %>" class="text-decoration-none">edit Category</a></td>
+                          <td><a href="/api/v1/admin/categorymanage/deletecategory/<%= category._id %>"  class="text-decoration-none">Delete Category</a></td>
+                      </tr>
+                    <%  }); %>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+                      
+   
+          
+        </div>
+        
+  
+    </div>
+  </div>
+  
+
+
+
+<%- include('../layouts/adminfooter.ejs') %>

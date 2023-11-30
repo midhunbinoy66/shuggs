@@ -1,0 +1,181 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="container my-2 vh-100">
+        <div class="row ">
+            <div class="col-md-4 ">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="text-center">
+                                <h3>Admin</h3>
+                            </div>
+                            <div>
+                                <ul class="list-group list-group-flush ">
+                                    <li  class="list-group-item" >Sales Report 
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/generatesalesreport" class="text-decoration-none">Generate Sales Report</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >User management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Product management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Category management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Order management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Coupon management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                           
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Category Offer management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allcategoryoffers" class="text-decoration-none">All Category Offers</a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addcategoryoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                           
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Product Offer management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allproductoffers" class="text-decoration-none">All Product Offers</a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addproductoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                           
+                                        </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+        
+                        </div>
+                    </div>
+                    </div>
+
+            </div>
+            <div class="col-md-8">
+                <h1>Welcom Admin</h1>
+                <div>
+                    <label for="timeFilter">Select Time Filter:</label>
+                    <select id="timeFilter">
+                      <option value="monthly">Monthly</option>
+                      <option value="yearly">Yearly</option>
+                      <!-- Add more options for different filters -->
+                    </select>
+                  </div>
+                  <canvas id="salesChart" width="400" height="200"></canvas>
+                  
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+
+async  function getOrdrData(){
+
+const response = await fetch('/api/v1/admin/orderdata')
+const result  = await response.json();
+if(!result.success){
+    alert('Error occurred');
+            return;
+}
+
+const monthlyData = result.monthlyData;
+const yearlyData = result.yearlyData;
+
+
+const labels = Object.keys(monthlyData); // Extracts the months as labels
+const salesCounts = Object.values(monthlyData).map(orders => orders.length); // Count of orders per month
+const ctx = document.getElementById('salesChart').getContext('2d');
+
+// Initial chart with monthly data
+const initialChartData = {
+  labels: labels,
+  datasets: [{
+    label: 'Sales',
+    data: salesCounts,
+    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+    borderColor: 'rgba(54, 162, 235, 1)',
+    borderWidth: 1
+  }]
+};
+
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: initialChartData,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+// Event listener for changing time filter
+document.getElementById('timeFilter').addEventListener('change', function() {
+  const selectedFilter = this.value;
+  let newData = {};
+
+  // Update data based on selected filter
+  if (selectedFilter === 'monthly') {
+    newData = monthlyData;
+  } else if (selectedFilter === 'yearly') {
+    newData = yearlyData;
+  }
+  // Add more conditions for different filters
+
+  // Update chart data
+  chart.data.labels = Object.keys(newData);
+  chart.data.datasets[0].data = Object.values(newData).map(orders => orders.length);
+  chart.update();
+});
+}
+
+getOrdrData();
+
+
+// const downloadSalesReport = async () => {
+//     try {
+//         const response = await fetch('/api/v1/admin/download-sales-report-excel');
+//         const blob = await response.blob();
+        
+//         const url = window.URL.createObjectURL(new Blob([blob]));
+//         const link = document.createElement('a');
+//         link.href = url;
+//         link.setAttribute('download', 'sales-report.xlsx');
+//         document.body.appendChild(link);
+//         link.click();
+//         document.body.removeChild(link);
+//     } catch (error) {
+//         console.error('Error downloading sales report:', error);
+//         // Handle the error (e.g., display an error message)
+//     }
+// };
+
+
+
+// </script>
+
+
+
+    <%- include('../layouts/adminfooter.ejs') %>
+

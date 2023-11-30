@@ -1,0 +1,80 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="container my-2 vh-100">
+        <div class="row ">
+            <div class="col-md-4 ">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="text-center">
+                                <h3>Admin</h3>
+                            </div>
+                            <div>
+                                <ul class="list-group list-group-flush ">
+                                    <li  class="list-group-item" >User management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Product management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Category management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Order management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                        </ul>
+                                    </li>
+                                    <li  class="list-group-item" >Coupon management
+                                        <ul class="list-group list-group-flush ">
+                                            <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                            <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                           
+                                        </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+        
+                        </div>
+                    </div>
+                    </div>
+
+            </div>
+            <div class="col-md-8">
+                <h1>Category Offers</h1>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-responsive">
+                            <tr>
+                                <th>Offer Name</th>
+                                <th>Offer Type</th>
+                                <th>Offer Value</th>
+                                <th>Offer Category</th>
+                            </tr>
+                            <% categoryOffers.forEach(offer => { %>
+                            <tr>
+                                <td><%= offer.name %></td>
+                                <td><%= offer.type %></td>
+                                <td><%= offer.value %></td>
+                                <td><%= offer.category.name %></td>
+                            </tr>
+                            
+                        <%    }); %>
+                        </table>
+                    </div>
+                </div>               
+            </div>
+
+
+        </div>
+    </div>
