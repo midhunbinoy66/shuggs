@@ -1,5 +1,5 @@
 <%- include('../layouts/logginheader.ejs') %>
-<div class="container my-2 " >
+<div class="container my-2 "  style="max-width: 100vw;">
     <div class="row ">
         <div class="col-md-12">
             <div id="carouselExampleIndicators" class="carousel slide ">
@@ -44,7 +44,7 @@
     <div class="row">
       <div class="col d-flex justify-content-center">
         <div class="">
-          <a href="/api/v1/user/productlist" class="btn btn-secondary p-3">View Trending Products at Shuggs</a>
+          <a href="/user/productlist" class="btn btn-secondary p-3">View Trending Products at Shuggs</a>
         </div>
       </div>
     </div>
@@ -52,10 +52,10 @@
  
 
 
-<div class="container mt-5">
+<div class="container mt-5" style="max-width: 100vw;">
   <div class="row">
     <div class="col d-md-flex justify-content-evenly">
-      <a href="/api/v1/user/productlist?category=&brand=Nike&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+      <a href="/user/productlist?category=&brand=Nike&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
         <div class="card">
         <img src="BannerImages/Nike logo.jpg" alt="" class="brandlogo">
         <div class="card-body">
@@ -63,7 +63,7 @@
         </div>
       </div>
       </a>
-      <a href="/api/v1/user/productlist?category=&brand=Adidas&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold"> 
+      <a href="/user/productlist?category=&brand=Adidas&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold"> 
         <div class="card">
         <img src="BannerImages/adidaslogo.webp" alt="" class="brandlogo">
         <div class="card-body">
@@ -72,7 +72,7 @@
       </div>
 
       </a>
-     <a href="/api/v1/user/productlist?category=&brand=Puma&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+     <a href="/user/productlist?category=&brand=Puma&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
       <div class="card">
         <img src="BannerImages/pumaLogo.jpg" alt="" class="brandlogo">
         <div class="card-body">
@@ -81,7 +81,7 @@
       </div>
 
      </a>
-     <a href="/api/v1/user/productlist?category=&brand=New Balance&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
+     <a href="/user/productlist?category=&brand=New Balance&minPrice=&maxPrice=" class="text-decoration-none text-dark fw-bold">
       <div class="card">
         <img src="BannerImages/newBalance.jpg" class="brandlogo" alt="">
         <div class="card-body">
@@ -95,13 +95,13 @@
 </div>
 
   
-<div class="container my-2 shadow">
+<div class="container my-2 shadow" style="max-width: 100vw;">
 <div class="row">
   <h1 class="text-white">Browse By Catgories</h1>
 </div>
   <div class="row row-cols-1 row-cols-md-2 g-4">
     <div class="col">
-      <a href="/api/v1/user/productlist?category=Outdoor&brand=&minPrice=&maxPrice=">
+      <a href="/user/productlist?category=Outdoor&brand=&minPrice=&maxPrice=">
         <div class="card  h-100">
           <img src="BannerImages/outdoor.webp" class="card-img-top gridImage" alt="...">
           <div class="card-img-overlay my-auto mx-auto">
@@ -112,7 +112,7 @@
       </a>
     </div>
     <div class="col">
-      <a href="/api/v1/user/productlist?category=Formal&brand=&minPrice=&maxPrice=">
+      <a href="/user/productlist?category=Formal&brand=&minPrice=&maxPrice=">
         <div class="card h-100">
           <img src="BannerImages/Formal.webp" class="card-img-top gridImage" alt="...">
           <div class="card-img-overlay my-auto mx-auto">
@@ -124,7 +124,7 @@
 
     </div>
     <div class="col">
-      <a href="/api/v1/user/productlist?category=Athletic&brand=&minPrice=&maxPrice=">
+      <a href="/user/productlist?category=Athletic&brand=&minPrice=&maxPrice=">
         <div class="card h-100">
           <img src="BannerImages/Athletic.webp" class="card-img-top gridImage" alt="...">
           <div class="card-img-overlay my-auto mx-auto">
@@ -136,7 +136,7 @@
 
     </div>
     <div class="col">
-      <a href="/api/v1/user/productlist?category=Casual&brand=&minPrice=&maxPrice=">
+      <a href="/user/productlist?category=Casual&brand=&minPrice=&maxPrice=">
         <div class="card h-100">
           <img src="BannerImages/casual.webp" class="card-img-top gridImage" alt="...">
           <div class="card-img-overlay my-auto mx-auto">
@@ -151,10 +151,10 @@
 </div>
 
 
-<div class="container mt-5 mb-5">
+<div class="container mt-5 mb-5" style="max-width: 100vw;">
   <div class="row">
     <div class="col d-md-flex justify-content-evenly">
-      <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=male" class="text-decoration-none text-dark fw-bold">
+      <a href="/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=male" class="text-decoration-none text-dark fw-bold">
         <div class="card">
         <img src="BannerImages/MEN.jpg" alt="" class="brandlogo">
         <div class="card-body">
@@ -162,7 +162,7 @@
         </div>
       </div>
       </a>
-      <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=female" class="text-decoration-none text-dark fw-bold"> 
+      <a href="/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=female" class="text-decoration-none text-dark fw-bold"> 
         <div class="card">
         <img src="BannerImages/WOMEN.jpg" alt="" class="brandlogo">
         <div class="card-body">
@@ -171,7 +171,7 @@
       </div>
 
       </a>
-     <a href="/api/v1/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=unisex" class="text-decoration-none text-dark fw-bold">
+     <a href="/user/productlist?category=&brand=&minPrice=&maxPrice=&gender=unisex" class="text-decoration-none text-dark fw-bold">
       <div class="card">
         <img src="BannerImages/UNISEX.jpg" alt="" class="brandlogo">
         <div class="card-body">
@@ -223,7 +223,9 @@ body{
 overflow-x: hidden;
 }
 
-
+.container-fluid {
+overflow-x: hidden;
+}
 
 </style>
 

@@ -7,11 +7,11 @@
                 <div class="card-body">
                     <h3 class="card-title text-center">User</h3>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">Change Password</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a></li>
+                        <li class="list-group-item"><a href="/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
+                        <li class="list-group-item"><a href="/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                        <li class="list-group-item"><a href="/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
+                        <li class="list-group-item"><a href="/user/changepassword" class="text-decoration-none">Change Password</a></li>
+                        <li class="list-group-item"><a href="/user/userwallet" class="text-decoration-none">Wallet</a></li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                                             <strong>District:</strong> <%= address.district %><br>
                                             <strong>State:</strong> <%= address.state %><br>
                                             <strong>Zip Code:</strong> <%= address.zipcode %><br>
-                                            <!-- <a href="/api/v1/user/useraddress/<%= address._id %>" class="btn btn-danger mt-2">Remove Address</a> -->
+                                            <!-- <a href="/user/useraddress/<%= address._id %>" class="btn btn-danger mt-2">Remove Address</a> -->
                                         </li>
                                     </ul>
                                 </div>
@@ -39,7 +39,7 @@
                         <% } else { %>
                             <p class="mt-3">No addresses found for this user.</p>
                         <% } %>
-                        <a href="/api/v1/user/addaddress" class="btn btn-primary mt-3">Add New Address</a>
+                        <a href="/user/addaddress" class="btn btn-primary mt-3">Add New Address</a>
                     </div>
                 </div>
             </div>

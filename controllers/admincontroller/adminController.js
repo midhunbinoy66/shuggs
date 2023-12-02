@@ -1,5 +1,6 @@
 const cutsomeAPIError = require('../../errors/customeAPIError');
 const Admin = require('../../models/admin');
+const Order = require('../../models/order');
 
 
 
@@ -53,13 +54,49 @@ const adminLogin = async (req,res)=>{
 
 
 const loadAdminDash = async(req,res)=>{
-    res.render('admindashboard')
+try {
+
+    const recentOrder = await Order.findOne({}).sort({createdAt:-1}).populate('user').populate('address').populate('products.product')
+
+const startOfDay = new Date();
+startOfDay.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+
+const endOfDay = new Date();
+endOfDay.setHours(23, 59, 59, 999); // Set time to 23:59:59
+
+// Find orders placed today
+const todayOrders = await Order.find({
+  createdAt: { $gte: startOfDay, $lte: endOfDay }
+}).populate('user').populate('address').populate('products.product');
+
+
+
+const totalSalesData = todayOrders.map(order=>{
+    const orderid=order._id;
+    const total = order.products.reduce((acc,product)=>{
+        acc += product.discountedPrice * product.quantity;
+        return acc;
+    },0)
+    const paymentMethod = order.payment;
+    const status = order.status;
+    return { orderId: orderid, totalSales: total ,payment:paymentMethod,status:status}
+})
+
+    res.render('admindashboard',{recentOrder,todayOrders,totalSalesData})
+
+    
+} catch (error) {
+    console.log(error.message);
+}
+
+
 }
 
 
 const adminLogout=async (req,res)=>{
-    res.cookie('token','logout',{httpOnly:true,expires:new Date(Date.now()+5000)})  
-    res.redirect('/api/v1/admin/login')
+    res.clearCookie('token'); // Clear the 'token' cookie
+    res.redirect('/api/v1/admin/login'); // Redirect to the login page
 }
 
 

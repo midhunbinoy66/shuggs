@@ -74,10 +74,12 @@ var razorpay = new Razorpay({
 
 
 //middleware
+const checkLoggedin =require('../middlewares/customeMiddleware')
 const userAuth = require('../middlewares/authentication');
 const authorizePermission = require('../middlewares/authorizePermission');
 const { filterProducts, regularSearch } = require('../controllers/usercontrollers/randomtrials');
 const { loadUserCoupons } = require('../controllers/usercontrollers/userProfileController');
+const logginSupport = require('../middlewares/loginAuthChecker');
 
 router.use(bodyParser.urlencoded({extended:true}));
 router.use(bodyParser.json());
@@ -89,7 +91,7 @@ router.use((req, res, next) => {
   });
 
 
-router.route('/login').post(loginUser).get(loadLogin)
+router.route('/login').post(loginUser).get([logginSupport,checkLoggedin],loadLogin)
 router.route('/register').post(registerUser).get(loadRegister);
 router.route('/forgotpassword').get(loadForgotPassword).post(forgotpassword);
 router.route('/verifyresetpassword/:id').get(loadVerifyRestPassword).post(verifyResetPassword)

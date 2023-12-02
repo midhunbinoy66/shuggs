@@ -20,6 +20,7 @@ const Wishlist = require('../../models/wishlist');
 const CategoryOffer = require('../../models/categoryOffers');
 const ProductOffer = require('../../models/productOffer');
 const { calculateTotal } = require('../../utils/coupon');
+const notFound = require('../../middlewares/notfound');
 var razorpay = new Razorpay({
     key_id: 'rzp_test_XTV4tqVFhaTx6m',
     key_secret: '2unUYBkxN3MAB5LM1Ax8sJRW',
@@ -63,7 +64,7 @@ const loginUser = async (req,res)=>{
     const oneDay = 1000 * 60 *60*24;
     const token  = await user.createToken();
     res.cookie('token',token,{httpOnly:true,expires:new Date(Date.now()+oneDay)});
-    res.redirect('/api/v1/user/userdashboard')
+    res.redirect('/user/userdashboard')
 }
 
 
@@ -147,7 +148,7 @@ const registerUser = async (req,res)=>{
 
 
         console.log(userData);
-        res.redirect('/api/v1/user/verification')
+        res.redirect('/user/verification')
 
                 const mailOptions = {
             from: process.env.SMTP_USERNAME,
@@ -163,7 +164,7 @@ const registerUser = async (req,res)=>{
             } else {
                 console.log('Email sent: ' + info.response);
                 // res.json({ message: 'OTP sent successfully' });
-                res.redirect('/api/v1/user/verification')
+                res.redirect('/user/verification')
             }
         });
 
@@ -247,7 +248,7 @@ const verifyResetPassword = async(req,res)=>{
     user.resetToken = undefined;
     user.resetTokenExpiration =undefined;
     await user.save();
-    res.redirect('/api/v1/user/login');
+    res.redirect('/user/login');
 }
 
 const loadVerification = async(req,res)=>{
@@ -283,14 +284,17 @@ const loadLogin = async(req,res)=>{
 
 
 const logoutUser =async (req,res)=>{
-    res.cookie('token','logout',{httpOnly:true,expires:new Date(Date.now()+5000)})  
-    res.redirect('/api/v1/user/login')  
+    // res.cookie('token','logout',{httpOnly:true,expires:new Date(Date.now()+5000)})  
+    // res.redirect('/user/login')  
+    res.clearCookie('token'); // Clear the 'token' cookie
+    res.redirect('/user/login'); // Redirect to the login page
 }
 
 
 
 const loadUserDashboard = async(req,res)=>{
     const user = req.user;
+    console.log(req.user);
     const products =await Product.find({isDeleted:false});
     res.render('userDashboard',{products});
 }
@@ -298,11 +302,18 @@ const loadUserDashboard = async(req,res)=>{
 
 
 const loadSingleProduct =async (req,res)=>{
-    const productId =req.params.id;
-    let message = req.query.message
-    const product = await Product.findById({_id:productId});
-    product.offerPrice = await checkAllOffer(product);
-    res.render('singleproduct',{product,message});
+    try {
+        const productId =req.params.id;
+        let message = req.query.message
+        const product = await Product.findById({_id:productId});
+
+        product.offerPrice = await checkAllOffer(product);
+        res.render('singleproduct',{product,message});
+    } catch (error) {
+        console.log(error.message);
+        notFound(req,res);
+    }
+
 }
 
 
@@ -429,7 +440,7 @@ const completeCheckout = async (req, res) => {
     if(req.body.updatedCartItems){
         updatedCartItems = JSON.parse(req.body.updatedCartItems);
     }
-    console.log(updatedCartItems);
+
 
     const user = await User.findById({ _id: userId }).populate("addresses");
     const cart = await Cart.findOne({ user: userId }).populate('items.product')
@@ -441,7 +452,7 @@ const completeCheckout = async (req, res) => {
             errors,
             message: "hey , please choose address and Payment menthod",
           });
-    //    return res.redirect('/api/v1/user/checkout')
+    //    return res.redirect('/user/checkout')
     }
     if (cart.items.length === 0 || !cart) {
       return res.render("checkout", {
@@ -494,12 +505,13 @@ const completeCheckout = async (req, res) => {
     if(itemToUse == cart.items){
         for(let item of cart.items){
             item.discountedPrice = await checkAllOffer(item.product)
-            cartTotal +=item.discountedPrice;
+     
         }
     }
 
     
     for(const item of itemToUse ){
+        cartTotal +=item.discountedPrice;
         const product = await Product.findById(item.product._id);
         const selectedSize = product.sizes.find(size => size.size === item.size);
         const productObject = {
@@ -522,7 +534,7 @@ const completeCheckout = async (req, res) => {
             //     message: "Your wallet does not have sufficient Balance",
             //   });
 
-            return res.redirect('/api/v1/user/checkout?message=Sorry your wallet does not have sufficient balance ');
+            return res.redirect('/user/checkout?message=Sorry your wallet does not have sufficient balance ');
         }
 
         const walletTransaction = new WalletTransactions({
@@ -541,7 +553,7 @@ const completeCheckout = async (req, res) => {
     await cart.save();
     await order.save();
     await user.save();
-    res.redirect(`/api/v1/user/ordersuccess/${order._id}`)
+    res.redirect(`/user/ordersuccess/${order._id}`)
 
   } catch (error) {
     console.log(error.message)
@@ -765,7 +777,7 @@ try {
     await address.save();
     const user = await User.findByIdAndUpdate({_id:userId},{$push:{addresses:address._id}},{new:true});
 
-    return  res.redirect('/api/v1/user/useraddress')
+    return  res.redirect('/user/useraddress')
 } catch (error) {        
     if (error.errors) {
 const errors = Object.values(error.errors).map(err => err.message);
@@ -782,7 +794,7 @@ const deleteAddress = async (req,res)=>{
     console.log('hello');
     const addressId = req.params.id;
     await Address.findByIdAndDelete({_id:addressId})
-    res.redirect('/api/v1/user/useraddress')
+    res.redirect('/user/useraddress')
 }
 
 const loadUserHome = async (req,res)=>{
@@ -805,7 +817,7 @@ const editProfile = async (req,res)=>{
     const userId = req.user.userId;
     const {name,mobile} =req.body;
     const user = await User.findByIdAndUpdate({_id:userId},{$set:{name:name,mobile:mobile}},{new:true,runValidators:true});
-   return res.redirect('/api/v1/user/userhome')
+   return res.redirect('/user/userhome')
        
     } catch (error) {
         const user = await User.findById({_id:req.user.userId});
@@ -854,7 +866,7 @@ const sendTokenForMail = async (req,res)=>{
         user.emailResetTokenExpiration = Date.now()+3600000;
         user.save();
         sendMailForEmailChange(newEmail,token);
-        res.redirect('/api/v1/user/emailchangeverify')
+        res.redirect('/user/emailchangeverify')
         
     } catch (error) {
         return res.render('editemail',{message:"Reset email connot be send at this moment,please try after sometime"});
@@ -883,7 +895,7 @@ const EmailChangeVerification = async(req,res)=>{
     user.emailResetToken= undefined;
     user.emailResetTokenExpiration =undefined;
     await user.save();
-    res.redirect('/api/v1/user/userhome');
+    res.redirect('/user/userhome');
     
 }
 
@@ -946,7 +958,7 @@ const changePassword  = async (req,res)=>{
 const loadUserOrders  = async (req,res)=>{
     const userId = req.user.userId;
 
-const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address')
+const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address').sort({createdAt:-1})
     let message = req.query.message
     res.render('userorders',{orders,message});
 
@@ -992,7 +1004,7 @@ const cancelOrder = async (req,res)=>{
     const order = await Order.findByIdAndUpdate({_id:orderId},{$set:{status:'cancelled'}});
     await orderStatus.save();
     await user.save();
-    res.redirect('/api/v1/user/userorders');
+    res.redirect('/user/userorders');
 }
 
 
@@ -1026,7 +1038,7 @@ const cancelSingleProduct =async (req,res)=>{
     const selectedSize = product.sizes.find(size =>size.size === selectedProduct.size );
 
     if(selectedProduct.status === 'cancelled' || selectedProduct.status === 'returned' || order.status === 'cancelled'){
-      return  res.redirect('/api/v1/user/userorders?message="the product is already cancelled or retured"');
+      return  res.redirect('/user/userorders?message="the product is already cancelled or retured"');
     }
 
     
@@ -1051,7 +1063,7 @@ if(order.status === 'paid'){
     await order.save();
     await user.save();
     await product.save();
-    res.redirect('/api/v1/user/userorders');
+    res.redirect('/user/userorders');
 
 }
 
@@ -1091,7 +1103,7 @@ const loadReturnProduct = async(req,res)=>{
         console.log(product);
         res.render('returnproduct.ejs',{order,product,productId});
     } catch (error) {
-        res.status(500).json({message:'somesort of internal error occured'})
+        throw notFound(req,res);
     }
 }
 
@@ -1127,7 +1139,7 @@ const returnProduct = async(req,res)=>{
 
         
         await returnProduct.save();
-        res.redirect('/api/v1/user/userorders')
+        res.redirect('/user/userorders')
     } catch (error) {
         res.send({error:error.message})
     }
@@ -1179,7 +1191,7 @@ const addToWishlist = async(req,res)=>{
     }
 
     await userWishlist.save();
-    res.redirect('/api/v1/user/wishlist')
+    res.redirect('/user/wishlist')
 }
 
 
@@ -1203,7 +1215,7 @@ const removeWishlist = async (req,res)=>{
     }
 
     await Wishlist.findByIdAndUpdate({_id:wishlist._id},{$pull:{items:{product:productId}}});
-    res.redirect('/api/v1/user/wishlist')
+    res.redirect('/user/wishlist')
     
 }
 
@@ -1229,140 +1241,3 @@ module.exports ={
 }
 
 
-
-// const loadCart =async (req,res)=>{
-//     try {
-//         const userId  =  req.user.userId;
-//         console.log(userId);
-//         const cart = await Cart.findOne({ user: userId }).populate('items.product');
-//         res.render('cart',{cart})
-//         if(!cart){
-//             console.log('no cart')
-//             let cart;
-//             return res.render('cart',{cart,message:"your cart is empty please add items"});
-//         }
-      
-        
-//     } catch (error) {
-//         console.log(error.message);      
-//     }
-
-
-// }
-
-
-// const addToCart = async (req,res)=>{
-//     const userId = req.user.userId
-//     const productId =req.body.productId;
-//     const size = req.body.size;
-//     console.log(size);
-//     const quantity = "1"
-//     let cart = await Cart.findOne({user:userId});
-
-//     if(!cart){
-//         cart = new Cart({user:userId,items:[]});
-      
-//     }
-//     const product = await Product.findById({_id:productId});
-//     const selectedSize = product.sizes.find(shoe =>shoe.size === size);
-//     console.log(selectedSize)
-  
-//     if(selectedSize.quantity < parseInt(quantity)){
-//     return res.redirect(`/api/v1/user/singleproduct/${productId}?message='selected varient is out of stoke'`);
-//     }
-    
-
-//     const exitsingItem = cart.items.find(item=>item.product.toString()===productId && item.size.toString() ===size);
-//     if(exitsingItem){
-
-//             selectedSize.quantity -= parseInt(quantity);
-//             await product.save(); 
-
-//         exitsingItem.quantity += parseInt(quantity)
-//         exitsingItem.size = size 
-
-//     }else{
-//         selectedSize.quantity -= parseInt(quantity);
-//         await product.save(); 
-//         cart.items.push({product:productId,quantity:parseInt(quantity),size:size})
-//     }
-
-//     await cart.save();
-//     res.status(200).redirect('/api/v1/user/cart')
-// }
-
-
-
-
-
-// const editCartQuantity = async (req,res)=>{
-//     try {
-//         const {userId} =req.user  
-//         const quantity = req.body.quantity       
-//         console.log(quantity)
-//         const {size} = req.query
-//         console.log(size)
-//         let cart = await Cart.findOne({ user: userId}).populate('items.product');
-//         const productId =req.params.id;
-//         let product = await Product.findById({_id:productId});
-//         let selected = product.sizes.find(shoe => shoe.size===size);
-//         console.log(selected);
-//         if(!selected || quantity > selected.quantity){
-//             console.log('hi')
-//             // return   res.redirect('/api/v1/user/cart');
-//             cart = await Cart.findOneAndUpdate({user:userId,"items.product":productId,"items.size":size},{$set:{'items.$.quantity':selected.quantity}},{new:true}).populate('items.product')
-//             return res.render('cart',{cart,message:"update quantity is greater than the stock available"});
-//         }
-//         cart = await Cart.findOneAndUpdate({user:userId,"items.product":productId,"items.size":size},{$set:{'items.$.quantity':quantity}},{new:true}).populate('items.product')
-//         res.redirect('/api/v1/user/cart');
-
-//     } catch (error) {
-//         console.error(error);
-//     res.status(500).send('Internal Server Error');
-//     }
-// }
-
-// const deleteCartItem = async (req,res)=>{
-//     try {
-//         const productId = req.params.id
-//         const {userId}  = req.user  
-//         const {size,quantity} = req.query
-//         console.log(size);
-//         await Cart.findOneAndUpdate({user:userId},{$pull:{items:{product:productId,size:size}}},{new:true}).populate('items.product');
-//         const product = await Product.findOne({_id:productId});
-//         const selectedSize = product.sizes.find(shoe => shoe.size === size);
-//         selectedSize.quantity +=parseInt(quantity);
-//         await product.save() 
-//         console.log(selectedSize);
-//         res.redirect('/api/v1/user/cart');
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-
-// } 
-
-
-
-
-// const applyCoupon =async (req,res)=>{
-
-//     try {
-//         const { couponCode, cartItems } = req.body;
-//         const coupon  =await Coupon.findOne({code:couponCode});
-//         if(!coupon){
-//             return res.json({success: false, error: 'Invalid coupon code'})
-//         }
-    
-//         const updatedCartItems = applyCouponDiscount(cartItems,coupon.discountType,coupon.discountAmount);    
-//         const updatedTotal = calculateTotal(updatedCartItems);
-//         console.log(updatedTotal);
-//         return res.json({ success: true, updatedTotal:updatedTotal, updatedCartItems: updatedCartItems });
-        
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ success: false, error: 'Internal server error' });
-//     }
-
- 
-// }

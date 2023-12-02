@@ -73,11 +73,13 @@ const authorizePermissions = require('../middlewares/authorizePermission');
 const { loadAddCoupons, addCoupons, getAllCoupons, deleteCoupon, loadEditCoupons, editCoupon } = require("../controllers/admincontroller/couponController");
 const { loadAllCategoryOffers, loadAddCategoryOffer, addCategoryOffer } = require("../controllers/admincontroller/categoryOfferController");
 const { loadAllProductOffers } = require("../controllers/admincontroller/productOfferController");
+const logginSupport = require("../middlewares/loginAuthChecker");
+const checkLoggedin = require("../middlewares/customeMiddlewareAdmin");
 
 
 
 router.route("/register").get(loadAdminRegister).post(adminRegister);
-router.route("/login").get(loadAdminLogin).post(adminLogin);
+router.route("/login").get([logginSupport,checkLoggedin],loadAdminLogin).post(adminLogin);
 router.route("/admindash").get(adminAuth,authorizePermissions('admin'),loadAdminDash);
 router.route("/logout").get(adminLogout);
 router.route("/products").get(adminAuth,authorizePermissions('admin'),getAllProducts);

@@ -14,7 +14,7 @@
         order_id: orderId,
         handler: function (response) {
             // Handle successful payment response
-            window.location.href = '/api/v1/user/razorpay/checkout/success?orderId=' + orderId;
+            window.location.href = '/user/razorpay/checkout/success?orderId=' + orderId;
             console.log(response);
             // Redirect or perform further actions as needed
         },

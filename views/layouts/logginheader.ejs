@@ -12,7 +12,7 @@
   async function getCartItemCount(){
 
     try {
-      const response = await fetch('/api/v1/user/cartcount');
+      const response = await fetch('/user/cartcount');
       if(!response.ok){
         throw new Error('network response was not ok')
       }
@@ -49,7 +49,7 @@ updateCartCountFromBackend();
 async function getWishlistCount(){
   try {
     
-    const response = await fetch('/api/v1/user/wishlistcount');
+    const response = await fetch('/user/wishlistcount');
     const result = await response.json();
     if(!result.success){
       console.log('error in backend to fetch wishlist data');
@@ -76,31 +76,12 @@ getWishlistCount();
 
  <title>Shuggs.Ecom</title>
   </head>
-  <!-- <nav class="navbar bg-body-tertiary bg-dark ">
-    <div class="container-fluid d-flex justify-content-between">
-        <div  class="d-none d-md-block ">
-          <a class="navbar-brand text-white" href="/api/v1/user/userdashboard">Shuggs.com</a>
-        </div >
-        <div>
-          <form class="d-flex" role="search" action="/api/v1/user/search" method="GET">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"  name="search"> 
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-        <div>
-          <a class="navbar-brand text-white" href="/api/v1/user/userhome" >User</a> 
-          <a class="navbar-brand text-white" href="/api/v1/user/cart" >Cart</a>  
-          <a class="navbar-brand text-white" href="/api/v1/user/userdashboard">Home</a>
-            <a class="navbar-brand text-white" href="/api/v1/user/logout">Logout</a>
-            
-        </div>
-    </div>
-  </nav> -->
 
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark " style="max-width: 100vw;">
     <div class="container-fluid">
       <!-- Brand/logo (visible on md screens and above) -->
-      <a class="navbar-brand d-none d-md-block" href="/api/v1/user/userdashboard">Shuggs.com</a>
+      <a class="navbar-brand d-none d-md-block" href="/user/userdashboard">Shuggs.com</a>
   
       <!-- Toggler/collapsible button for smaller screens -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,35 +92,35 @@ getWishlistCount();
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/api/v1/user/userhome">User</a>
+            <a class="nav-link" href="/user/userhome">User</a>
           </li>
           <li class="nav-item">
             <div class="cartBadge " style="position: relative;">
-              <a class="nav-link" href="/api/v1/user/cart">Cart</a>
+              <a class="nav-link" href="/user/cart">Cart</a>
               <span id="cartCount" class="text-white fw-bold" style="position: absolute; top:-6px; right:0px ;  padding: 4px 8px;" ></span>
             </div>
 
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/api/v1/user/userdashboard">Home</a>
+            <a class="nav-link" href="/user/userdashboard">Home</a>
           </li>
           <li class="nav-item">
             <div class=" wishlistBadge" style="position: relative;">
-              <a class="nav-link" href="/api/v1/user/wishlist">Wishlist</a>
+              <a class="nav-link" href="/user/wishlist">Wishlist</a>
               <span id="wishlistCount" class="text-white fw-bold" style="position: absolute; top:-6px; right:0px ;  padding: 4px 8px;"></span>
               </div>
 
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/api/v1/user/logout">Logout</a>
+            <a class="nav-link" href="/user/logout">Logout</a>
           </li>
         </ul>
       </div>
   
       <!-- Search form -->
       <div class="d-none d-md-block">
-        <form class="d-flex" role="search" action="/api/v1/user/search" method="GET">
+        <form class="d-flex" role="search" action="/user/search" method="GET">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>

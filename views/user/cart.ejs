@@ -1,8 +1,7 @@
 
-
   <%- include('../layouts/logginheader.ejs') %>
 
-<div class="container my-2">
+<div class="container my-2 ">
     <div class="row">
         <!-- User Sidebar -->
         <div class="col-md-4 mb-2">
@@ -12,10 +11,10 @@
                 </div>
                 <div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">Change Password</a></li>
+                        <li class="list-group-item"><a href="/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
+                        <li class="list-group-item"><a href="/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                        <li class="list-group-item"><a href="/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
+                        <li class="list-group-item"><a href="/user/changepassword" class="text-decoration-none">Change Password</a></li>
                     </ul>
                 </div>
             </div>
@@ -41,14 +40,14 @@
                                     <div class="col-md-6 d-flex justify-content-center align-items-center">
                                       <div class="row">
                                           <div class="col-md-12">
-                                              <form action="/api/v1/user/cart/update/<%= item.product._id %>?size=<%= item.size %>" method="post" class="mb-2">
+                                              <form action="/user/cart/update/<%= item.product._id %>?size=<%= item.size %>" method="post" class="mb-2">
                                                   <div class="input-group">
                                                       <input type="number" name="quantity" class="form-control" value="<%= item.quantity %>" min="1" required>
                                                       <button type="submit" class="btn btn-primary">Update Quantity</button>
                                                   </div>
                                               </form>
                                   
-                                              <form action="/api/v1/user/cart/delete/<%= item.product._id %>?size=<%= item.size %>&quantity=<%= item.quantity %>" method="post">
+                                              <form action="/user/cart/delete/<%= item.product._id %>?size=<%= item.size %>&quantity=<%= item.quantity %>" method="post">
                                                   <button type="submit" class="btn btn-danger mt-2">Delete</button>
                                               </form>
                                           </div>
@@ -72,14 +71,14 @@
                             <% }); %>
 
                             <div class="d-flex justify-content-center my-2">
-                                <a href="/api/v1/user/checkout" class="btn btn-primary mt-2">Proceed to Checkout</a>
+                                <a href="/user/checkout" class="btn btn-primary mt-2">Proceed to Checkout</a>
                             </div>
                         <% } else { %>
                             <div class="card">
                                 <div class="card-body">
                                     <p>Hola! Your cart is empty</p>
                                 </div>
-                                <a href="/api/v1/user/userdashboard" class="btn btn-secondary">Please add products to your cart</a>
+                                <a href="/user/userdashboard" class="btn btn-secondary">Please add products to your cart</a>
                             </div>
                         <% } %>
 
@@ -100,25 +99,27 @@
 <style>
 
     
+
+
+
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
-}
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
 
-main {
-  flex: 1; /* Allow the main content to grow and take up remaining space */
-}
+    .container {
+        flex: 1;
+        margin-bottom: 300px;
+    }
 
-footer {
-  flex-shrink: 0; /* Prevent the footer from shrinking */
-}
-    /* Body and container styles */
 
     .image-container {
         text-align: center;
         margin-bottom: 10px;
     }
+
+
 
     /* Additional styles for product image */
     .card-img-top {

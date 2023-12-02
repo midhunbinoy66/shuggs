@@ -103,7 +103,7 @@ const getOrderData = async (req,res)=>{
 }
 
 
-const getSalesReportPdf = async (req,res)=>{
+const getSalesReportPdif = async (req,res)=>{
     try {
         const {startDate,endDate}=req.body;
         console.log(startDate,endDate);
@@ -560,6 +560,439 @@ content += `</table>`;
         console.log(error.message);
     }
 }
+
+
+
+
+
+
+
+const { jsPDF } = require('jspdf');
+require('jspdf-autotable');
+
+const getSalesReportPdf = async (req, res) => {
+    try {
+        const { startDate, endDate } = req.body;
+        console.log(startDate, endDate);
+        const newStartDate = new Date(startDate);
+        const newEndDate = new Date(endDate);
+        console.log(newStartDate, newEndDate);
+        const orders = await Order.find({
+            createdAt: { $gte: newStartDate, $lte: newEndDate },
+            status: 'delivered'
+        }).populate('user products.product address');
+
+        const salesReportData = orders.flatMap(order => {
+            const orderInfo = {
+                orderId: order._id,
+                user: order.user.name,
+                paymentMethod: order.payment,
+                orderStatus: order.status,
+            };
+
+            return order.products.map(product => ({
+                ...orderInfo,
+                productName: product.product.name,
+                productSize: product.size,
+                productQuantity: product.quantity,
+                productPrice: product.discountedPrice || product.product.price,
+                total: isNaN(product.discountedPrice) ? parseFloat(product.product.price * product.quantity) : parseFloat(product.discountedPrice * product.quantity),
+                productStatus: product.status
+            }));
+        });
+
+        
+        const categoryBasedSales = await Order.aggregate([
+            {
+                $match:{
+                    createdAt:{
+                        $gte:newStartDate,
+                        $lte:newEndDate
+                    },
+                    status:'delivered'
+                }
+            },
+            {$unwind:'$products'},
+            {
+                $lookup:{
+                    from:'products',
+                    localField:'products.product',
+                    foreignField:'_id',
+                    as:'productDetails',
+                }
+            },
+            {$unwind:'$productDetails'},
+            {
+                $lookup:{
+                    from:'categories',
+                    localField:'productDetails.category',
+                    foreignField:'_id',
+                    as:'productWithCategory'
+                }
+            },
+            {$unwind:'$productWithCategory'},
+            {
+                $group:{
+                    _id:'$productWithCategory.name',
+                    totalSales:{
+                        $sum:{$multiply:[
+                            {$ifNull:['$products.discountedPrice','$productDetails.price']},
+                            '$products.quantity'
+                        ]}
+                    }
+                }
+            }
+        ])
+    
+    
+    
+    
+    
+    const brandBasedSales = await Order.aggregate([
+        {
+            $match:{
+                createdAt:{
+                    $gte:newStartDate,
+                    $lte:newEndDate
+                },
+                status:'delivered'
+            }
+        },
+        
+                {$unwind:'$products'},
+                {
+                    $lookup:{
+                        from:'products',
+                        localField:'products.product',
+                        foreignField:'_id',
+                        as:'productDetails'
+                    }
+                },
+                {$unwind:'$productDetails'},
+                {
+                    $group:{
+                        _id:'$productDetails.brand',
+                        totalSales:{
+                            $sum:{
+                                $multiply:[
+                                    {$ifNull:['$products.discountedPrice','$productDetails.price']},
+                                    '$products.quantity'
+    
+                                ]
+                            }
+                        }
+                    }
+                }
+              ]);
+    
+    
+              const genderBasedSales = await Order.aggregate([
+                {
+                    $match:{
+                        createdAt:{
+                            $gte:newStartDate,
+                            $lte:newEndDate
+                        },
+                        status:'delivered'
+                    }
+                },
+                {$unwind:'$products'},
+                {
+                    $lookup:{
+                        from:'products',
+                        localField:'products.product',
+                        foreignField:'_id',
+                        as:'productDetails'
+                    }
+                },
+                {$unwind:'$productDetails'},
+                {
+                   $group:{
+                    _id:'$productDetails.gender',
+                    totalSales:{
+                        $sum:{
+                            $multiply:[
+                                {$ifNull:['$products.discountedPrice','$productDetails.price']},
+                                '$products.quantity'
+                            ]
+                        }
+                    
+                    }
+                   } 
+                }
+              ])
+    
+    
+    
+    const topSoldProducts = await Order.aggregate([
+        {
+            $match:{
+                createdAt:{
+                    $gte:newStartDate,
+                    $lte:newEndDate
+                },
+                status:'delivered'
+            }
+        },
+        {$unwind:'$products'},
+        {
+            $lookup:{
+                from:'products',
+                localField:'products.product',
+                foreignField:'_id',
+                as:'productDetails'
+            }
+        },
+        {$unwind:'$productDetails'},
+        {
+            $group:{
+                _id:'$products.product',
+                productName: { $first: '$productDetails.name' }, // Fetching the product name
+                totalQuantitySold:{
+                    $sum:'$products.quantity'
+                }
+            }
+        },
+        
+        {
+            $sort:{totalQuantitySold:-1}
+        },
+        {
+            $limit:5
+        }
+    
+    ])
+    
+    
+    const paymentBasedSales = await Order.aggregate([
+        {
+            $match:{
+                createdAt:{
+                    $gte:newStartDate,
+                    $lte:newEndDate
+                },
+                status:'delivered'
+            }
+        },
+        {$unwind:'$products'},
+        {
+            $lookup:{
+                from:'products',
+                localField:'products.product',
+                foreignField:'_id',
+                as:'productDetails'
+    
+            }
+        },
+        {$unwind:'$productDetails'},
+        {
+            $group:{
+                _id:'$payment',
+                totalSales:{
+                    $sum:{
+                        $multiply:[
+                            {$ifNull:['$products.discountedPrice','$productDetails.price']},
+                            '$products.quantity'    
+                        ]
+                    }
+                }
+            }
+        }
+    ])
+    
+    
+    
+    const topCustomer = await Order.aggregate([
+        {
+            $match:{
+                createdAt:{
+                    $gte:newStartDate,
+                    $lte:newEndDate
+                },
+                status:'delivered'
+            }
+        },
+    {$unwind:'$products'},
+    {$lookup:{
+        from:'users',
+        localField:'user',
+        foreignField:'_id',
+        as:'userDetails'
+    }},
+    {
+    $unwind:'$userDetails'
+    },
+    {
+        $group:{
+            '_id':'$userDetails.name',
+            totalSales:{   $sum:1    }
+        }
+    },
+    {
+        $sort:{totalSales:-1}
+    }
+    
+    ])
+
+
+
+
+
+
+        const doc = new jsPDF();
+        let yOffset = 20;
+
+        doc.setFontSize(10);
+
+        doc.text('Sales Report', 105, yOffset, { align: 'center' });
+        yOffset += 10;
+
+        const columns = [
+            'Order Id', 'Customer', 'Payment Method', 'Order Status',
+            'Product Name', 'Product Size', 'Product Quantity', 'Product Price', 'Total', 'Product Status'
+        ];
+        const data = salesReportData.map(order => [
+            order.orderId, order.user, order.paymentMethod, order.orderStatus,
+            order.productName, order.productSize, order.productQuantity,
+            order.productPrice, order.total, order.productStatus
+        ]);
+
+        doc.autoTable({
+            head: [columns],
+            body: data,
+            startY: yOffset + 10
+        });
+
+        let nextTableStartY = doc.autoTable.previous.finalY + 20;
+
+        doc.text('Category Based Sales Data', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+
+        const categoryColumns = ['Category Id', 'Total Sales'];
+        const categoryData = categoryBasedSales.map(category => [
+            category._id, category.totalSales
+        ]);
+
+        doc.autoTable({
+            head: [categoryColumns],
+            body: categoryData,
+            startY: nextTableStartY  + 10
+
+        });
+
+
+
+        nextTableStartY = doc.autoTable.previous.finalY+20;
+
+        doc.text('Gender Based Sales Data', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+        
+        const genderColumns = ['Gender', 'Total Sales'];
+        const genderData = genderBasedSales.map(gender=>[
+            gender._id,gender.totalSales
+        ])
+
+        doc.autoTable({
+            head: [genderColumns],
+            body: genderData,
+            startY: nextTableStartY  + 10
+        });
+
+
+        nextTableStartY = doc.autoTable.previous.finalY+20;
+
+        doc.text('Brand Based Sales Data', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+
+        const brandColumns = ['Brand Name', 'Total Sales'];
+        const brandData = brandBasedSales.map(brand=>[
+            brand._id,brand.totalSales
+        ])
+
+        doc.autoTable({
+            head: [brandColumns],
+            body: brandData,
+            startY: nextTableStartY  + 10
+        });
+
+
+
+
+
+        nextTableStartY = doc.autoTable.previous.finalY+20;
+
+        doc.text('Payment Based Sales Data', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+
+        const paymentColumns = ['Payment Type', 'Total Sales'];
+        const paymentData = paymentBasedSales.map(payment=>[
+            payment._id,payment.totalSales
+        ])
+
+        doc.autoTable({
+            head: [paymentColumns],
+            body: paymentData,
+            startY: nextTableStartY  + 10
+        });
+
+
+        nextTableStartY = doc.autoTable.previous.finalY+20;
+
+        doc.text('Customer Based Sales Data', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+
+
+        const customerColumns = ['Customer', 'Total Sales'];
+        const customerData = topCustomer.map(customer=>[
+            customer._id,customer.totalSales
+        ])
+
+        doc.autoTable({
+            head: [customerColumns],
+            body: customerData,
+            startY: nextTableStartY  + 10
+        });
+
+
+        
+        nextTableStartY = doc.autoTable.previous.finalY+20;
+
+
+        doc.text('Best Selling Products', 105, doc.autoTable.previous.finalY + 20, { align: 'center' });
+        yOffset = doc.autoTable.previous.finalY + 30;
+
+        const topSoldProductsColumns = ['Product Name','Id', 'Sold'];
+        const topSoldProductsData = topSoldProducts.map(product=>[
+            product.productName,product._id,product.totalQuantitySold
+        ])
+
+        doc.autoTable({
+            head: [topSoldProductsColumns],
+            body: topSoldProductsData,
+            startY: nextTableStartY  + 10
+        });
+
+
+
+
+
+        const buffer = Buffer.from(doc.output('arraybuffer'));
+        res.setHeader('Content-Disposition', `attachment;filename="salesreport.pdf"`);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.end(buffer);
+
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
+
+
+
+
+
+
 
 
 const getSalesReportExcel = async(req,res)=>{

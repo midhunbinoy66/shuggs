@@ -17,11 +17,12 @@ const loadAddCoupons = async (req,res)=>{
 
 const addCoupons = async(req,res)=>{
     try {
-        const {code,discountType,discountAmount,expiryDate} = req.body;
+        const {code,discountType,discountAmount,expiryDate,maxDiscountAmount} = req.body;
         const coupon = new Coupon({
             code:code,
             discountType:discountType,
             discountAmount:discountAmount,
+            maxDiscountAmount:maxDiscountAmount,
             expiryDate:expiryDate
         })    
         await coupon.save();
@@ -57,9 +58,9 @@ const loadEditCoupons = async (req, res) => {
 const editCoupon = async (req,res)=>{
     try {
         console.log('hi')
-        const {couponcode,discountType,discountAmount,expiryDate} = req.body;
+        const {couponcode,discountType,discountAmount,expiryDate,maxDiscountAmount} = req.body;
         const couponId = req.params.id;
-        const coupon = await Coupon.findByIdAndUpdate({_id:couponId},{$set:{couponcode:couponcode,discountType:discountType,discountAmount:discountAmount,expiryDate:expiryDate}},{runValidators:true});
+        const coupon = await Coupon.findByIdAndUpdate({_id:couponId},{$set:{couponcode:couponcode,discountType:discountType,discountAmount:discountAmount,maxDiscountAmount:maxDiscountAmount,expiryDate:expiryDate}},{runValidators:true});
         res.redirect('/api/v1/admin/allcoupons')    
 
     } catch (error) {

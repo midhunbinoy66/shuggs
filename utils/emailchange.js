@@ -30,7 +30,7 @@ const sendMailForEmailChange = (email,token)=>{
         } else {
           console.log("Email sent: " + info.response);
           // res.json({ message: 'OTP sent successfully' });
-          res.redirect("/api/v1/user/verification");
+          res.redirect("/user/verification");
         }
       });
 

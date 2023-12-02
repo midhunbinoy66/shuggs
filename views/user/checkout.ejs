@@ -12,11 +12,11 @@
                     </div>
                     <div>
                         <ul class="list-group list-group-flush ">
-                            <li  class="list-group-item" ><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
-                            <li  class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
-                            <li  class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show addresses</a></li>
-                            <li  class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change passord</a></li>
-                            <li  class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a></li>
+                            <li  class="list-group-item" ><a href="/user/editprofile" class="text-decoration-none">Edit profiles</a></li>
+                            <li  class="list-group-item"><a href="/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                            <li  class="list-group-item"><a href="/user/useraddress" class="text-decoration-none">Show addresses</a></li>
+                            <li  class="list-group-item"><a href="/user/changepassword" class="text-decoration-none">change passord</a></li>
+                            <li  class="list-group-item"><a href="/user/userwallet" class="text-decoration-none">Wallet</a></li>
                             </ul>
                     </div>
 
@@ -46,10 +46,10 @@
                                                     <img src="/../productImages/<%= item.product.images[0] %>" class="card-img-top img-fluid rounded-start" alt="Product Image">
                                                 </div>
                                                 <p>Quantity: <%= item.quantity %></p>
-                                                <form action="/api/v1/user/cart" method="get">
+                                                <form action="/user/cart" method="get">
                                                     <button type="submit" class="btn btn-primary ">Update Quantity</button>
                                                 </form>
-                                                <form action="/api/v1/user/cart/delete/<%= item.product._id %>?size=<%= item.size %>&quantity=<%= item.quantity %>" method="post">
+                                                <form action="/user/cart/delete/<%= item.product._id %>?size=<%= item.size %>&quantity=<%= item.quantity %>" method="post">
                                                     <button type="submit" class="btn btn-danger mt-1">Delete</button>
                                                 </form>
                                                 <p class="list-group-item mt-1">Size: <%= item.size %></p>
@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="col-md-6 d-flex align-items-end my-2 my-sm-0">
                                     <button id="applyCouponButton" class="btn btn-success">Apply Coupon</button>
-                                    <a href="/api/v1/user/usercoupons" class="btn btn-secondary mx-1">Your Coupons</a>
+                                    <a href="/user/usercoupons" class="btn btn-secondary mx-1">Your Coupons</a>
                                 </div>
 
                             </div>
@@ -98,7 +98,7 @@
     </div>
  
 
-    <form action="/api/v1/user/checkout" method="post" id="yourFormId">
+    <form action="/user/checkout" method="post" id="yourFormId">
 
 
         <div class="container">
@@ -126,7 +126,7 @@
                                 </div>
                             <% }); %>
                             <div class="d-flex justify-content-center">
-                                <a href="/api/v1/user/addaddress" class="btn btn-warning">Add New Address</a>
+                                <a href="/user/addaddress" class="btn btn-warning">Add New Address</a>
                             </div>
                         </div>
                     </div>
@@ -214,7 +214,7 @@
 
             const couponCode = document.getElementById('couponCode').value;
 
-            const response = await fetch('/api/v1/user/checkout/applycoupon',{
+            const response = await fetch('/user/checkout/applycoupon',{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json',
@@ -284,7 +284,7 @@ async function initiateRazorpayPayment() {
         // const updatedCartItems = JSON.parse(document.querySelector('input[name="updatedCartItems"]').value) || cartData.items;
         const updatedCartItemsElement = document.querySelector('input[name="updatedCartItems"]');
         const updatedCartItems = updatedCartItemsElement ? JSON.parse(updatedCartItemsElement.value) : cartData.items;
-        const response = await fetch('/api/v1/user/checkout/razorpay', {
+        const response = await fetch('/user/checkout/razorpay', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ async function initiateRazorpayPayment() {
             if (result.orderId) {
                 // Redirect to the Razorpay checkout page
                 console.log(result.orderId);
-                window.location.href = `/api/v1/user/razorpay/checkout?orderId=${result.orderId}`;
+                window.location.href = `/user/razorpay/checkout?orderId=${result.orderId}`;
             } else {
                 console.error('Failed to initiate Razorpay payment. Server response:', result.error);
                 alert('Failed to initiate Razorpay payment. Server response: ' + JSON.stringify(result));

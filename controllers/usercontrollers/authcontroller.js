@@ -59,7 +59,7 @@ const loginUser = async (req,res)=>{
     const oneDay = 1000 * 60 *60*24;
     const token  = await user.createToken();
     res.cookie('token',token,{httpOnly:true,expires:new Date(Date.now()+oneDay)});
-    res.redirect('/api/v1/user/userdashboard')
+    res.redirect('/user/userdashboard')
 }
 
 

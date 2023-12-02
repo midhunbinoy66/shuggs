@@ -56,7 +56,6 @@
                                     <li  class="list-group-item" >Product Offer management
                                         <ul class="list-group list-group-flush ">
                                             <li class="list-group-item" ><a href="/api/v1/admin/allproductoffers" class="text-decoration-none">All Product Offers</a></li>
-                                            <li class="list-group-item" ><a href="/api/v1/admin/addproductoffer" class="text-decoration-none">Add Category Offer</a></li>
                                            
                                         </ul>
                                     </li>
@@ -70,17 +69,65 @@
 
             </div>
             <div class="col-md-8">
-                <h1>Welcom Admin</h1>
-                <div>
-                    <label for="timeFilter">Select Time Filter:</label>
-                    <select id="timeFilter">
-                      <option value="monthly">Monthly</option>
-                      <option value="yearly">Yearly</option>
-                      <!-- Add more options for different filters -->
-                    </select>
+                <div class="row">
+                    <div class="col">
+                        <h1>Welcom Admin</h1>
+                        <div>
+                            <label for="timeFilter">Select Time Filter:</label>
+                            <select id="timeFilter">
+                              <option value="monthly">Monthly</option>
+                              <option value="yearly">Yearly</option>
+                            </select>
+                          </div>
+                          <canvas id="salesChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+  
+                  <div class="container my-2">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/productImages/<%= recentOrder.products[0].product.images[0] %>" class="card-img-top" alt="..." style="max-width: 100%; height: 200px; object-fit: cover;"> 
+                                <div class="card-body">
+                                  <h5 class="card-title">Latest Order</h5>
+                                  <p class="card-text"> <span class="text-dark fw-bold"><%= recentOrder.products[0].product.name %></span></p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item"> <span class="text-secondary fw-bold">User Name:</span> <%= recentOrder.user.name %></li>
+                                  <li class="list-group-item"> <span class="text-secondary fw-bold">Address:</span> <%= recentOrder.address.locality %>,<%= recentOrder.address.city %>,<%= recentOrder.address.district %>,<%= recentOrder.address.state %>,<%= recentOrder.address.zipcode %></li>
+                                  <li class="list-group-item"><span class="text-secondary fw-bold">Order Time:</span>  <%= recentOrder.createdAt %></li>
+                                </ul>
+                                <div class="card-body">
+                                  <a href="/api/v1/admin/manageorder/<%= recentOrder._id %>" class="card-link text-decoration-none" >Manage this order</a>
+
+                                </div>
+                              </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100" style="width: 18rem; ">
+                                <img src="/productImages/todaySales.webp" class="card-img-top" alt="..."  style="max-width: 100%; height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                  <h5 class="card-title">Todays Sale</h5>
+                                  <p class="card-text"><span class="text-secondary fw-bold">Total Number of Sales: </span> <%= totalSalesData.length %> </p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item"><span class="text-secondary fw-bold">Total : </span> <%= totalSalesData.reduce((acc,curr)=>{
+                                   acc += curr.totalSales 
+                                   return acc;
+                                  },0) %></li>
+
+                                  <li class="list-group-item"> <span class="text-secondary fw-bold">Payment Pending Orders No:</span> <%= totalSalesData.filter(order=>order.status === 'payment_pending').length %></li>
+                                  <li class="list-group-item"> <span class="text-secondary fw-bold">Cancelled Orders No:</span> <%= totalSalesData.filter(order=>order.status === 'cancelled').length %></li>
+                                  <li class="list-group-item"> <span class="text-secondary fw-bold"> Delivered Orders No: </span><%= totalSalesData.filter(order=>order.status === 'delivered').length %></li>
+                                </ul>
+                                <div class="card-body">
+                                  <a href="/api/v1/admin/generatesalesreport" class="card-link text-decoration-none">Get Sales Report</a>
+                                </div>
+                              </div>
+                        </div>
+                        
+                    </div>
                   </div>
-                  <canvas id="salesChart" width="400" height="200"></canvas>
-                  
             </div>
 
 

@@ -2,11 +2,19 @@ const jwt = require('jsonwebtoken');
 const badRequetsError = require('../errors/badrequest');
 const cutsomeAPIError = require('../errors/customeAPIError');
 
-const adminAuth = async (req,res,next)=>{
+const logginSupport = async (req,res,next)=>{
 const token = req.cookies.token;
+// if(!token){
+//     return res.redirect('/api/v1/user/login')
+// }
+
 if(!token){
-    return res.redirect('/user/login')
+   return  next();
 }
+
+// if(token ==='logout'){
+//  return res.render('login')
+// }
 
 try {
     const payload =jwt.verify(token,process.env.JWT_SECRET);
@@ -21,4 +29,4 @@ try {
 }
 
 
-module.exports = adminAuth
+module.exports = logginSupport

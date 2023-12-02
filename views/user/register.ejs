@@ -4,7 +4,7 @@
   <div class="container my-5">
     <div class="row d-flex justify-content-center">
         <div class="col-md-6">
-            <form action="/api/v1/user/register" method="post" class="form-control" >
+            <form action="/user/register" method="post" class="form-control" >
                 <div class="form-group">
                     <label for="" class="text-dark">Name</label>
                     <input type="text" placeholder="enter name" required name="name" class="form-control">
@@ -37,8 +37,8 @@
                                                 
             </form> 
             <div class="mt-1">
-                <a href="/api/v1/user/login" class="text-decoration-none btn-light p-1 ">already a User,sign in</a>
-                <a href="/api/v1/user/Verification" class="text-decoration-none text-tertiary " > or Verify  Email</a>        
+                <a href="/user/login" class="text-decoration-none btn-light p-1 ">already a User,sign in</a>
+                <a href="/user/Verification" class="text-decoration-none text-tertiary " > or Verify  Email</a>        
             </div>
             <% if (errors && errors.length > 0) { %>
                 <div class="alert alert-danger">

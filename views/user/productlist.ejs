@@ -7,7 +7,7 @@
       <!-- Sidebar Section -->
       <div class="col-md-3">
         <div class="container my-5 text-white">
-          <form action="/api/v1/user/productlist" method="get">
+          <form action="/user/productlist" method="get">
             <!-- Category Filter -->
             <div class="mb-3">
               <label for="category" class="form-label">Category:</label>
@@ -81,8 +81,8 @@
                       <p class="text-warning">Best Seller</p>
                     <%}%>
                     <input type="hidden" name="id" value="<%= product._id %>">
-                    <a href="/api/v1/user/singleproduct/<%= product._id %>" class="btn btn-primary">View Product</a>
-                    <a href="/api/v1/user/addtowishlist/<%= product._id %>" ><i class="fa-solid fa-heart btn btn-outline" style="color: #e864b1;" ></i></a>
+                    <a href="/user/singleproduct/<%= product._id %>" class="btn btn-primary">View Product</a>
+                    <a href="/user/addtowishlist/<%= product._id %>" ><i class="fa-solid fa-heart btn btn-outline" style="color: #e864b1;" ></i></a>
                   </div>
                 </div>
               </div>

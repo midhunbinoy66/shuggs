@@ -11,15 +11,15 @@
               </div>
               <div>
                 <ul class="list-group list-group-flush ">
-                  <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit
+                  <li class="list-group-item"><a href="/user/editprofile" class="text-decoration-none">Edit
                       profiles</a></li>
-                  <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show
+                  <li class="list-group-item"><a href="/user/userorders" class="text-decoration-none">Show
                       Orders</a></li>
-                  <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show
+                  <li class="list-group-item"><a href="/user/useraddress" class="text-decoration-none">Show
                       addresses</a></li>
-                  <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">change
+                  <li class="list-group-item"><a href="/user/changepassword" class="text-decoration-none">change
                       passord</a></li>
-                  <li class="list-group-item"><a href="/api/v1/user/userwallet" class="text-decoration-none">Wallet</a>
+                  <li class="list-group-item"><a href="/user/userwallet" class="text-decoration-none">Wallet</a>
                   </li>
                 </ul>
               </div>
@@ -42,10 +42,10 @@
                     </li>
                     <li class="list-group-item">Order Status:<%=order.status %>
                     </li>
-                    <li class="list-group-item"><a href="/api/v1/user/confirmcancel/<%= order._id %>"
+                    <li class="list-group-item"><a href="/user/confirmcancel/<%= order._id %>"
                         class="btn btn-primary">Cancel Whole order</a></li>
                         <li class="list-group-item"><a
-                          href="/api/v1/user/downloadinvoice/<%= order._id %>" class="btn btn-success">Download Invoice</a></li>
+                          href="/user/downloadinvoice/<%= order._id %>" class="btn btn-success">Download Invoice</a></li>
                     <div class="card">
 
                       <div class="card-body">
@@ -72,7 +72,7 @@
                                             <%= item.status %><br>
                               </div>
 
-                              <a href="/api/v1/user/singleproduct/<%= item.product._id%>">
+                              <a href="/user/singleproduct/<%= item.product._id%>">
                               
                                 <div>
                                   <img src="/../productImages/<%= item.product.images[0] %>"
@@ -111,7 +111,7 @@
                                     <button type="button" class="btn btn-secondary"
                                       data-bs-dismiss="modal">Close</button>
                                     <a
-                                      href="/api/v1/user/singleproductcancel/<%= item.product._id%>?orderId=<%= order._id %>">
+                                      href="/user/singleproductcancel/<%= item.product._id%>?orderId=<%= order._id %>">
                                       <button type="button" class="btn btn-primary">Confirm Cancellation</button>
                                     </a>
 
@@ -123,7 +123,7 @@
                           
                             <% if(item.status !== 'returned' && item.status==='delivered' ){ %>
                             <li class="list-group-item"><a
-                                href="/api/v1/user/singleproductreturn/<%= item.product._id%>?orderId=<%= order._id %>" class="btn btn-warning">Return
+                                href="/user/singleproductreturn/<%= item.product._id%>?orderId=<%= order._id %>" class="btn btn-warning">Return
                                 Product</a></li>
                            <% } %> 
                                 
@@ -177,6 +177,7 @@
 
     .container {
       flex: 1;
+      margin-bottom: 300px;
     }
 
     body {

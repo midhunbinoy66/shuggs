@@ -1,7 +1,7 @@
 <%- include('../layouts/logginheader.ejs') %>
 
 
-<div class="container  my-2">
+<div class="container  my-2 ">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -10,10 +10,10 @@
                 </div>
                 <div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><a href="/api/v1/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/userorders" class="text-decoration-none">Show Orders</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
-                        <li class="list-group-item"><a href="/api/v1/user/changepassword" class="text-decoration-none">Change Password</a></li>
+                        <li class="list-group-item"><a href="/user/editprofile" class="text-decoration-none">Edit Profile</a></li>
+                        <li class="list-group-item"><a href="/user/userorders" class="text-decoration-none">Show Orders</a></li>
+                        <li class="list-group-item"><a href="/user/useraddress" class="text-decoration-none">Show Addresses</a></li>
+                        <li class="list-group-item"><a href="/user/changepassword" class="text-decoration-none">Change Password</a></li>
                     </ul>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                                         </ul>
                                     </div>
                                     <div class="card-footer">
-                                        <form action="/api/v1/user/wishlist/remove/<%= item.product._id %>" method="post">
+                                        <form action="/user/wishlist/remove/<%= item.product._id %>" method="post">
                                             <button type="submit" class="btn btn-danger mt-2">Remove </button>
                                         </form>
                                     </div>
@@ -47,7 +47,7 @@
                             <div class="card">
                                 <div class="card-body text-center">
                                     <p>Hola! Your wishList is empty</p>
-                                    <a href="/api/v1/user/userdashboard" class="btn btn-secondary">Please add products to wishlist</a>
+                                    <a href="/user/userdashboard" class="btn btn-secondary">Please add products to wishlist</a>
                                 </div>
                             </div>
                         </div>
@@ -77,8 +77,9 @@
   min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
 }
 
-main {
+.container {
   flex: 1; /* Allow the main content to grow and take up remaining space */
+  margin-bottom: 300px;
 }
 
 footer {
