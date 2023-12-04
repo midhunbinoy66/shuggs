@@ -14,7 +14,8 @@ const multer = require('multer');
 const Address = require('./models/address');
 const Cart = require('./models/cart');
 const Product = require('./models/product');
-const CartHistory = require('./models/carthistory')
+const CartHistory = require('./models/carthistory');
+
 
 
 
@@ -24,6 +25,8 @@ app.use((req, res, next) => {
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     next();
   });
+
+
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

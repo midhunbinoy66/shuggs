@@ -31,9 +31,9 @@
                     <% coupons.forEach(coupon => { %>
                         <div class="col-md-4">
                             <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
-                                <div class="card-header" id="couponCode"><%= coupon.code %></div>
+                                <div class="card-header" id="couponCode_<%= coupon._id %>"><%= coupon.code %></div>
                                 <div class="card-body">
-                                    <h5 class="card-title"><button onclick="copyCouponCode()" class="btn btn-success">Copy</button></h5>
+                                    <h5 class="card-title"><button onclick="copyCouponCode('couponCode_<%= coupon.id %>')" class="btn btn-success">Copy</button></h5>
                                     <p class="card-text">Get a max discount up to <%= coupon.maxDiscountAmount %></p>
                                 </div>
                             </div>
@@ -41,10 +41,6 @@
                     <% }); %>
                 </div>
             </div>
-            
-
-
-
         </div>
         
 
@@ -52,9 +48,9 @@
 </div>
 
 <script>
-    function copyCouponCode() {
+    function copyCouponCode(id) {
     // Select the text within the coupon code span
-    const couponCodeElement = document.getElementById('couponCode');
+    const couponCodeElement = document.getElementById(id);
     const couponCode = couponCodeElement.textContent || couponCodeElement.innerText;
 
     // Create a temporary input element
@@ -85,8 +81,9 @@ body {
   min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
 }
 
-main {
+.container{
   flex: 1; /* Allow the main content to grow and take up remaining space */
+  margin-bottom: 200px;
 }
 
 footer {
