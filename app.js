@@ -37,6 +37,9 @@ app.use(cookieParser());
 
 app.use('/user',userRouter);
 app.use('/api/v1/admin',adminRouter);
+app.get('/', (req, res) => {
+  res.redirect('/user/login');
+});
 
 //middlewares 
 app.use(notFound);
