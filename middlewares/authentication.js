@@ -12,10 +12,6 @@ if(!token){
 try {
     const payload =jwt.verify(token,process.env.JWT_SECRET);
     req.user ={userId:payload.userId,name:payload.name,role:payload.role,email:payload.email};
-    const user = await User.findById({_id:payload.userId});
-    if(user.blocked===true){
-        throw new Error;
-    }
     next();
 
 } catch (error) {
