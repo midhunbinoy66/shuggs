@@ -173,7 +173,7 @@ const registerUser = async (req,res)=>{
             
                     if (error.errors) {
             const errors = Object.values(error.errors).map(err => err.message);
-            res.render('register', { errors }); // Pass errors to the view
+         return   res.render('register', { errors }); // Pass errors to the view
         }
         
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
@@ -181,7 +181,7 @@ const registerUser = async (req,res)=>{
             // Duplicate key error for the 'email' field
             // Handle the unique constraint violation error
             const errorMessage = 'Email address is already in use.';
-            res.status(400).render('register', { errors,message: errorMessage });
+           return res.status(400).render('register', { errors,message: errorMessage });
           }    
 
         else{
@@ -546,6 +546,7 @@ const completeCheckout = async (req, res) => {
         await walletTransaction.save();
         user.walletTransactions.push(walletTransaction._id);
         user.wallet-=parseFloat(cartTotal);
+        order.status = 'paid';
     }
 
 
@@ -1002,6 +1003,9 @@ const cancelOrder = async (req,res)=>{
         });
     }
     const order = await Order.findByIdAndUpdate({_id:orderId},{$set:{status:'cancelled'}});
+    orderStatus.products.forEach(product=>{
+        product.status ='cancelled';
+    })
     await orderStatus.save();
     await user.save();
     res.redirect('/user/userorders');

@@ -42,8 +42,11 @@
                     </li>
                     <li class="list-group-item">Order Status:<%=order.status %>
                     </li>
-                    <li class="list-group-item"><a href="/user/confirmcancel/<%= order._id %>"
+                    <% if(order.status !== 'cancelled' && order.status !== 'delivered') {%>
+                      <li class="list-group-item"><a href="/user/confirmcancel/<%= order._id %>"
                         class="btn btn-primary">Cancel Whole order</a></li>
+                   <% }%>
+
                         <li class="list-group-item"><a
                           href="/user/downloadinvoice/<%= order._id %>" class="btn btn-success">Download Invoice</a></li>
                     <div class="card">
@@ -81,7 +84,7 @@
                               </a>
 
                             </li>
-                            <% if(item.status !== 'cancelled'&& item.status !=='returned') {%>
+                            <% if(item.status !== 'cancelled'&& item.status !=='returned' && order.status !=='delivered' && order.status !== 'cancelled' ) {%>
                               <li class="list-group-item">
                                 <!-- Button trigger modal --><button type="button" class="btn btn-danger"
                                   data-bs-toggle="modal" data-bs-target="#staticBackdrop<%= item.product._id%><%= order._id %>">
