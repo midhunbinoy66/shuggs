@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/user',userRouter);
-app.use('/api/v1/admin',adminRouter);
+app.use('/admin',adminRouter);
 
 //middlewares 
 app.use(notFound);

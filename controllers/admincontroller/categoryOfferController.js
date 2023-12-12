@@ -30,7 +30,7 @@ const addCategoryOffer = async( req,res)=>{
         category:category._id
     })        
     await categoryOffer.save();
-    res.redirect('/api/v1/admin/allcategoryoffers');
+    res.redirect('/admin/allcategoryoffers');
     } catch (error) {
         console.log(error.message);
     }

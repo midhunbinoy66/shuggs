@@ -26,7 +26,7 @@ const addCoupons = async(req,res)=>{
             expiryDate:expiryDate
         })    
         await coupon.save();
-        res.redirect('/api/v1/admin/addcoupons/?message:"Coupon added succesfully"')
+        res.redirect('/admin/addcoupons/?message:"Coupon added succesfully"')
 
     } catch (error) {
         if (error.errors) {
@@ -61,7 +61,7 @@ const editCoupon = async (req,res)=>{
         const {couponcode,discountType,discountAmount,expiryDate,maxDiscountAmount} = req.body;
         const couponId = req.params.id;
         const coupon = await Coupon.findByIdAndUpdate({_id:couponId},{$set:{couponcode:couponcode,discountType:discountType,discountAmount:discountAmount,maxDiscountAmount:maxDiscountAmount,expiryDate:expiryDate}},{runValidators:true});
-        res.redirect('/api/v1/admin/allcoupons')    
+        res.redirect('/admin/allcoupons')    
 
     } catch (error) {
 
@@ -88,7 +88,7 @@ const editCoupon = async (req,res)=>{
 const deleteCoupon = async(req,res)=>{
     const couponId = req.params.id;
     const coupon = await Coupon.findOneAndDelete({_id:couponId});
-    res.redirect('/api/v1/admin/allcoupons')
+    res.redirect('/admin/allcoupons')
 }
 
 module.exports = {

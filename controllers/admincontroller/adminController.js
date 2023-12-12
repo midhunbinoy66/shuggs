@@ -17,7 +17,7 @@ const adminRegister =async (req,res)=>{
     try {
         const admin = await Admin.create({...req.body});
         if(admin){
-         return res.redirect('/api/v1/admin/login')
+         return res.redirect('/admin/login')
         }
         
     } catch (error) {
@@ -48,7 +48,7 @@ const adminLogin = async (req,res)=>{
     console.log(token);
     const oneDay = 1000 * 60 *60*24;
     res.cookie('token',token,{httpOnly:true,expires:new Date(Date.now()+oneDay)})
-    res.redirect('/api/v1/admin/admindash');
+    res.redirect('/admin/admindash');
 
 }
 
@@ -96,7 +96,7 @@ const totalSalesData = todayOrders.map(order=>{
 
 const adminLogout=async (req,res)=>{
     res.clearCookie('token'); // Clear the 'token' cookie
-    res.redirect('/api/v1/admin/login'); // Redirect to the login page
+    res.redirect('/admin/login'); // Redirect to the login page
 }
 
 

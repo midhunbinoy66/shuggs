@@ -12,49 +12,49 @@
                             <ul class="list-group list-group-flush ">
                                 <li  class="list-group-item" >Sales Report 
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/generatesalesreport" class="text-decoration-none">Generate Sales Report</a></li>
+                                        <li class="list-group-item" ><a href="/admin/generatesalesreport" class="text-decoration-none">Generate Sales Report</a></li>
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >User management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                        <li class="list-group-item" ><a href="/admin/usermanage" class="text-decoration-none">Manage User</a></li>
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Product management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
-                                        <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                        <li class="list-group-item" ><a href="/admin/products" class="text-decoration-none">View Product </a></li>
+                                        <li class="list-group-item" ><a href="/admin/addproduct" class="text-decoration-none">Add Product</a></li>
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Category management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
-                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                        <li class="list-group-item" ><a href="/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                        <li class="list-group-item" ><a href="/admin/addcategory" class="text-decoration-none">Add Category</a></li>
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Order management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                        <li class="list-group-item" ><a href="/admin/allorders" class="text-decoration-none">All Orders</a></li>
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Coupon management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
-                                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                        <li class="list-group-item" ><a href="/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                        <li class="list-group-item" ><a href="/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
                                        
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Category Offer management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/allcategoryoffers" class="text-decoration-none">All Category Offers</a></li>
-                                        <li class="list-group-item" ><a href="/api/v1/admin/addcategoryoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                        <li class="list-group-item" ><a href="/admin/allcategoryoffers" class="text-decoration-none">All Category Offers</a></li>
+                                        <li class="list-group-item" ><a href="/admin/addcategoryoffer" class="text-decoration-none">Add Category Offer</a></li>
                                        
                                     </ul>
                                 </li>
                                 <li  class="list-group-item" >Product Offer management
                                     <ul class="list-group list-group-flush ">
-                                        <li class="list-group-item" ><a href="/api/v1/admin/allproductoffers" class="text-decoration-none">All Product Offers</a></li>
-                                        <li class="list-group-item" ><a href="/api/v1/admin/addproductoffer" class="text-decoration-none">Add Category Offer</a></li>
+                                        <li class="list-group-item" ><a href="/admin/allproductoffers" class="text-decoration-none">All Product Offers</a></li>
+                                        <li class="list-group-item" ><a href="/admin/addproductoffer" class="text-decoration-none">Add Category Offer</a></li>
                                        
                                     </ul>
                                 </li>
@@ -71,7 +71,7 @@
             <h1>Generate Sales Report</h1>
             <div class="row">
                 <div class="col-md-10">
-                    <form action="/api/v1/admin/download-sales-report-pdf" method="post"  class="form-control">
+                    <form action="/admin/download-sales-report-pdf" method="post"  class="form-control">
                         <div class="form-group">
                             <div>
                                 <label for="startDate">Start Date</label>
@@ -96,7 +96,7 @@
                     </form>
 
 
-                    <form action="/api/v1/admin/download-sales-report-excel" method="post"  class="form-control my-2">
+                    <form action="/admin/download-sales-report-excel" method="post"  class="form-control my-2">
                         <div class="form-group">
                             <div>
                                 <label for="startDate">Start Date</label>
@@ -142,7 +142,7 @@
  
 const downloadSalesReport = async () => {
     try {
-        const response = await fetch('/api/v1/admin/download-sales-report-excel');
+        const response = await fetch('/admin/download-sales-report-excel');
         const blob = await response.blob();
         
         const url = window.URL.createObjectURL(new Blob([blob]));

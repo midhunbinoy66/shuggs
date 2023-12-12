@@ -44,7 +44,7 @@ const addproduct = async(req,res)=>{
             images:images
         });
         await product.save()
-        res.redirect('/api/v1/admin/products')
+        res.redirect('/admin/products')
     
     } catch (error) {
         if (error.errors) {
@@ -85,7 +85,7 @@ const editProduct = async (req,res)=>{
     
         const images = req.files.map(file => file.filename)
         const product = await Product.findByIdAndUpdate({_id:productId},{$set:{name:name,description:description,price:price,images:images,brand:brand,sizes:sizeVariants,category:category,gender:gender}})
-        res.redirect('/api/v1/admin/products');
+        res.redirect('/admin/products');
         
     } catch (error) {
         const product = await Product.findById({_id:req.body.productId})
@@ -107,7 +107,7 @@ const editProduct = async (req,res)=>{
 const deleteProduct = async (req,res)=>{
     const id = req.params.id;
     await Product.findByIdAndUpdate({_id:id},{$set:{isDeleted:true}});
-    res.redirect('/api/v1/admin/products')
+    res.redirect('/admin/products')
 }
 
 module.exports={loadAddProduct,addproduct,getAllProducts,loadEditProduct,editProduct,deleteProduct}

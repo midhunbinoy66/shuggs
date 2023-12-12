@@ -13,36 +13,36 @@
                 <ul class="list-group list-group-flush ">
                   <li class="list-group-item">User management
                     <ul class="list-group list-group-flush ">
-                      <li class="list-group-item"><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage
+                      <li class="list-group-item"><a href="/admin/usermanage" class="text-decoration-none">Manage
                           User</a></li>
                     </ul>
                   </li>
                   <li class="list-group-item">Product management
                     <ul class="list-group list-group-flush ">
-                      <li class="list-group-item"><a href="/api/v1/admin/products" class="text-decoration-none">View
+                      <li class="list-group-item"><a href="/admin/products" class="text-decoration-none">View
                           Product </a></li>
-                      <li class="list-group-item"><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add
+                      <li class="list-group-item"><a href="/admin/addproduct" class="text-decoration-none">Add
                           Product</a></li>
                     </ul>
                   </li>
                   <li class="list-group-item">Category management
                     <ul class="list-group list-group-flush ">
-                      <li class="list-group-item"><a href="/api/v1/admin/categorymanage"
+                      <li class="list-group-item"><a href="/admin/categorymanage"
                           class="text-decoration-none">Manage Category </a></li>
-                      <li class="list-group-item"><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add
+                      <li class="list-group-item"><a href="/admin/addcategory" class="text-decoration-none">Add
                           Category</a></li>
                     </ul>
                   </li>
                   <li class="list-group-item">Order management
                     <ul class="list-group list-group-flush ">
-                      <li class="list-group-item"><a href="/api/v1/admin/allorders" class="text-decoration-none">All
+                      <li class="list-group-item"><a href="/admin/allorders" class="text-decoration-none">All
                           Orders</a></li>
                     </ul>
                   </li>
                   <li  class="list-group-item" >Coupon management
                     <ul class="list-group list-group-flush ">
-                        <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
-                        <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                        <li class="list-group-item" ><a href="/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                        <li class="list-group-item" ><a href="/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
                        
                     </ul>
                 </li>
@@ -65,7 +65,7 @@
               <h1>Edit Category</h1>
               <div class="row">
                 <div class="col-md-8">
-                  <form action="/api/v1/admin/categorymanage/editcategory/<%= category._id %>" method="POST"
+                  <form action="/admin/categorymanage/editcategory/<%= category._id %>" method="POST"
                     class="form-control">
                     <div class="form-group">
                       <label for="name">Category Name:</label>

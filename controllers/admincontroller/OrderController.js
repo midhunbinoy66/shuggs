@@ -32,7 +32,7 @@ const orderStatusUpdate = async (req,res)=>{
     const orderId = req.params.id;
     const {status} =req.body;
     const order = await Order.findByIdAndUpdate({_id:orderId},{$set:{status:status}},{new:true});
-    res.redirect('/api/v1/admin/allorders');
+    res.redirect('/admin/allorders');
 }
 
 const productOrderStatusUpdate = async(req,res)=>{
@@ -45,7 +45,7 @@ const productOrderStatusUpdate = async(req,res)=>{
         const selectedProduct = order.products.find(product=>product.product.toString()===productId)
         selectedProduct.status=orderStatus;
         await order.save();
-        res.redirect(`/api/v1/admin/manageorder/${orderId}`);
+        res.redirect(`/admin/manageorder/${orderId}`);
     } catch (error) {
         console.log(error)
     }
@@ -54,7 +54,7 @@ const productOrderStatusUpdate = async(req,res)=>{
 const cancelOrder = async (req,res)=>{
     const orderId = req.params.id;
     const order = await Order.findByIdAndUpdate({_id:orderId},{$set:{status:"cancelled"}},{new:true});
-    res.redirect('/api/v1/admin/allorders');
+    res.redirect('/admin/allorders');
 }
 
 

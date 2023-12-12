@@ -16,7 +16,7 @@ const addCategory = async (req,res)=>{
     try {
         const category = await Category.create({...req.body});
         console.log(category);
-        res.redirect('/api/v1/admin/categorymanage')
+        res.redirect('/admin/categorymanage')
     } catch (error) {
         if (error.errors) {
             const errors = Object.values(error.errors).map(err => err.message);
@@ -44,7 +44,7 @@ const editCategory = async (req,res)=>{
         const id = req.params.id;
         const {name,description} = req.body;
         const category = await Category.findByIdAndUpdate({_id:id},{$set:{name:name,description:description}},{new:true, runValidators:true})
-        res.redirect('/api/v1/admin/categorymanage')
+        res.redirect('/admin/categorymanage')
         
     } catch (error) {
 
@@ -68,7 +68,7 @@ const editCategory = async (req,res)=>{
 const deleteCategory = async (req,res)=>{
     const id = req.params.id;
     await Category.findByIdAndDelete({_id:id});
-    res.redirect('/api/v1/admin/categorymanage')
+    res.redirect('/admin/categorymanage')
 }
 
 

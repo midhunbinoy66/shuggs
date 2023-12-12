@@ -12,30 +12,30 @@
                                 <ul class="list-group list-group-flush ">
                                     <li  class="list-group-item" >User management
                                         <ul class="list-group list-group-flush ">
-                                            <li class="list-group-item" ><a href="/api/v1/admin/usermanage" class="text-decoration-none">Manage User</a></li>
+                                            <li class="list-group-item" ><a href="/admin/usermanage" class="text-decoration-none">Manage User</a></li>
                                         </ul>
                                     </li>
                                     <li  class="list-group-item" >Product management
                                         <ul class="list-group list-group-flush ">
-                                            <li class="list-group-item" ><a href="/api/v1/admin/products" class="text-decoration-none">View Product </a></li>
-                                            <li class="list-group-item" ><a href="/api/v1/admin/addproduct" class="text-decoration-none">Add Product</a></li>
+                                            <li class="list-group-item" ><a href="/admin/products" class="text-decoration-none">View Product </a></li>
+                                            <li class="list-group-item" ><a href="/admin/addproduct" class="text-decoration-none">Add Product</a></li>
                                         </ul>
                                     </li>
                                     <li  class="list-group-item" >Category management
                                         <ul class="list-group list-group-flush ">
-                                            <li class="list-group-item" ><a href="/api/v1/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
-                                            <li class="list-group-item" ><a href="/api/v1/admin/addcategory" class="text-decoration-none">Add Category</a></li>
+                                            <li class="list-group-item" ><a href="/admin/categorymanage" class="text-decoration-none">Manage Category </a></li>
+                                            <li class="list-group-item" ><a href="/admin/addcategory" class="text-decoration-none">Add Category</a></li>
                                         </ul>
                                     </li>
                                     <li  class="list-group-item" >Order management
                                         <ul class="list-group list-group-flush ">
-                                            <li class="list-group-item" ><a href="/api/v1/admin/allorders" class="text-decoration-none">All Orders</a></li>
+                                            <li class="list-group-item" ><a href="/admin/allorders" class="text-decoration-none">All Orders</a></li>
                                         </ul>
                                     </li>
                                     <li  class="list-group-item" >Coupon management
                                         <ul class="list-group list-group-flush ">
-                                            <li class="list-group-item" ><a href="/api/v1/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
-                                            <li class="list-group-item" ><a href="/api/v1/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
+                                            <li class="list-group-item" ><a href="/admin/allcoupons" class="text-decoration-none">All coupons</a></li>
+                                            <li class="list-group-item" ><a href="/admin/addcoupons" class="text-decoration-none">add coupons</a></li>
                                            
                                         </ul>
                                     </li>
@@ -70,9 +70,9 @@
                                             <td>
                                                 <%= user.blocked %>
                                             </td>
-                                            <td class="d-flex flex-column"><a href="/api/v1/admin/usermanage/edituser/<%=user._id%>"
+                                            <td class="d-flex flex-column"><a href="/admin/usermanage/edituser/<%=user._id%>"
                                                     class="text-decoration-none">Edit User</a> <a
-                                                    href="/api/v1/admin/usermanage/deleteuser/<%=user._id%>"
+                                                    href="/admin/usermanage/deleteuser/<%=user._id%>"
                                                     class="text-decoration-none">Remove user</a></td>
                                         </tr>
                 

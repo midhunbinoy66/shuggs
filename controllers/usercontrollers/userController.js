@@ -546,6 +546,7 @@ const completeCheckout = async (req, res) => {
         await walletTransaction.save();
         user.walletTransactions.push(walletTransaction._id);
         user.wallet-=parseFloat(cartTotal);
+        order.status ='paid';
     }
 
 
@@ -957,10 +958,14 @@ const changePassword  = async (req,res)=>{
 
 const loadUserOrders  = async (req,res)=>{
     const userId = req.user.userId;
-
-const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address').sort({createdAt:-1})
+    const totalOrdersCount  = await Order.countDocuments({});
+    let itemsPerPage =10;
+    let pageNumber=parseInt(req.query.page) || 1;
+    const totalPages = Math.ceil(totalOrdersCount/itemsPerPage)
+    const startIndex = (pageNumber-1)*itemsPerPage
+    const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address').sort({createdAt:-1}).skip(startIndex ).limit(itemsPerPage)
     let message = req.query.message
-    res.render('userorders',{orders,message});
+    res.render('userorders',{orders,message,totalPages,currentPage:pageNumber});
 
 }
 
@@ -1037,7 +1042,7 @@ const cancelSingleProduct =async (req,res)=>{
 
     const selectedSize = product.sizes.find(size =>size.size === selectedProduct.size );
 
-    if(selectedProduct.status === 'cancelled' || selectedProduct.status === 'returned' || order.status === 'cancelled'){
+    if(selectedProduct.status === 'cancelled' || selectedProduct.status === 'returned' || order.status === 'cancelled' || order.status === 'delivered'){
       return  res.redirect('/user/userorders?message="the product is already cancelled or retured"');
     }
 
