@@ -39,7 +39,9 @@ app.use(cookieParser());
 app.use('/user',userRouter);
 app.use('/admin',adminRouter);
 
-
+app.get('/',(req,res)=>{
+  res.redirect('/user/login')
+})
 
 
 
