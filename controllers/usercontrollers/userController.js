@@ -303,9 +303,10 @@ const loadUserDashboard = async(req,res)=>{
 
 const loadSingleProduct =async (req,res)=>{
     try {
-        const productId =req.params.id;
+        console.log('hiiiiii');
+        const productSlug =req.params.id;
         let message = req.query.message
-        const product = await Product.findById({_id:productId});
+        const product = await Product.findOne({slug:productSlug});
 
         product.offerPrice = await checkAllOffer(product);
         res.render('singleproduct',{product,message});
@@ -1153,20 +1154,34 @@ const returnProduct = async(req,res)=>{
 
 
 
-const loadWallet = async(req,res)=>{
-    try {
-        const userId = req.user.userId;
-        const user = await User.findById({_id:userId}).populate('walletTransactions')
-        if(!user){
-            return res.status(404).json({message:"no such user found"})
-        }        
-        
-        res.render('userwallet',{user})
-
-    } catch (error) {
-        res.status(500).json({message:'Something went wrong, please try again'})
+const loadWallet = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await User.findById({ _id: userId }).populate(
+      "walletTransactions"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "no such user found" });
     }
-}
+
+    const walletTransactions = [...user.walletTransactions];
+    walletTransactions.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+    const pageNumber = req.query.page || 1;
+    let itemsPerPage = 5;
+    let totalPages = Math.floor(walletTransactions.length / itemsPerPage);
+    const startIndex = (pageNumber - 1) * itemsPerPage;
+    const endIndex = pageNumber * itemsPerPage;
+
+    const currentTransactions = walletTransactions.slice(startIndex, endIndex);
+
+    res.render('userwallet', { user, currentTransactions, totalPages,currentPage:pageNumber });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, please try again" });
+  }
+};
 
 
 const loadSample = async (req,res)=>{

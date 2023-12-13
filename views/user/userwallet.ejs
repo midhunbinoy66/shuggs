@@ -39,7 +39,7 @@
                     </tr>
                     <% if(user.walletTransactions.length>0) { %>
                     
-                        <% user.walletTransactions.forEach(transaction => { %>
+                        <% currentTransactions.forEach(transaction => { %>
                             <tr class="<%= transaction.type ==='debit'?'debit-row':'credit-row' %> " ><% 
                                 const formattedDate = transaction.date.toLocaleDateString('en-US');
                                 %>
@@ -55,6 +55,12 @@
 
 
                 </table>
+                <div class="pagination">
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                      <a href="/user/userwallet?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><%= i %></a>
+                    <% } %>
+                  </div>
+      
                 </div>
             </div>
 
@@ -72,5 +78,28 @@
     .credit-row{
         background-color: rgb(165, 245, 165);
     }
+
+    
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #333;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
 </style>
 <%- include('../layouts/footer.ejs') %>

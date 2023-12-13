@@ -88,7 +88,7 @@ const addToCart = async (req, res) => {
         const selectedSize = product.sizes.find(shoe => shoe.size === size);
 
         if (!selectedSize || selectedSize.quantity < parseInt(quantity)) {
-            return res.redirect(`/user/singleproduct/${productId}?message='selected variant is out of stock'`);
+            return res.redirect(`/user/singleproduct/${product.slug}?message='selected variant is out of stock'`);
         }
 
         // if (selectedSize.quantity < parseInt(quantity)) {
