@@ -42,10 +42,11 @@
                     </li>
                     <li class="list-group-item">Order Status:<%=order.status %>
                     </li>
-                    <% if(order.status !== 'cancelled' && order.status !== 'delivered') {%>
-                      <li class="list-group-item"><a href="/user/confirmcancel/<%= order._id %>"
+                    <% if(order.status !='cancelled' && order.status !=='delivered'){ %>
+                    <li class="list-group-item"><a href="/user/confirmcancel/<%= order._id %>"
+
                         class="btn btn-primary">Cancel Whole order</a></li>
-                   <% }%>
+                     <% } %>
 
                         <li class="list-group-item"><a
                           href="/user/downloadinvoice/<%= order._id %>" class="btn btn-success">Download Invoice</a></li>
@@ -84,7 +85,7 @@
                               </a>
 
                             </li>
-                            <% if(item.status !== 'cancelled'&& item.status !=='returned' && order.status !=='delivered' && order.status !== 'cancelled' ) {%>
+                            <% if(item.status !== 'cancelled'&& item.status !=='returned'&&order.status !=='delivered'&& order.status !=='cancelled' ) {%>
                               <li class="list-group-item">
                                 <!-- Button trigger modal --><button type="button" class="btn btn-danger"
                                   data-bs-toggle="modal" data-bs-target="#staticBackdrop<%= item.product._id%><%= order._id %>">
@@ -143,11 +144,19 @@
                 </ul>
 
               </div>
+
+
             </div>
 
 
 
             <% }); %>
+            
+            <div class="pagination">
+              <% for(let i = 1; i <= totalPages; i++) { %>
+                <a href="/user/userorders?page=<%= i %>" <%= i === currentPage ? 'class="active"' : '' %>><%= i %></a>
+              <% } %>
+            </div>
 
         </div>
         <% if(typeof message !== 'undefined'){ %>
@@ -199,6 +208,31 @@
       flex-shrink: 0;
       /* Prevent the footer from shrinking */
     }
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #333;
+  padding: 8px 12px;
+  text-decoration: none;
+  margin: 0 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.pagination a.active {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+</style>
+
+    
   </style>
 
   <%- include('../layouts/footer.ejs') %>

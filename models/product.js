@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 
 const productSchema = new mongoose.Schema({
@@ -66,9 +67,16 @@ const productSchema = new mongoose.Schema({
             enum:['male','female','unisex'],
             message:'{VALUE} is not supported',
             default:'unisex'
-        }
+        },
+        slug:String,
 })
 
+
+productSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
+  });
+  
 
 
 const Product = mongoose.model('Product', productSchema);

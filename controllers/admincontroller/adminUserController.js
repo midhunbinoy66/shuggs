@@ -18,13 +18,13 @@ const editUser = async (req, res) => {
     { _id: id },
     { $set: {blocked: blocked} }
   );
-  res.redirect("/api/v1/admin/usermanage");
+  res.redirect("/admin/usermanage");
 };
 
 const deleteUser = async (req, res) => {
   const id = req.params.id;
   await User.findByIdAndDelete({ _id: id });
-  res.redirect("/api/v1/admin/usermanage");
+  res.redirect("/admin/usermanage");
 };
 
 module.exports = { loadUserList, loadEditUser, editUser, deleteUser };

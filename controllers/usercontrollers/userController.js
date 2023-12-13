@@ -303,9 +303,10 @@ const loadUserDashboard = async(req,res)=>{
 
 const loadSingleProduct =async (req,res)=>{
     try {
-        const productId =req.params.id;
+        console.log('hiiiiii');
+        const productSlug =req.params.id;
         let message = req.query.message
-        const product = await Product.findById({_id:productId});
+        const product = await Product.findOne({slug:productSlug});
 
         product.offerPrice = await checkAllOffer(product);
         res.render('singleproduct',{product,message});
@@ -546,7 +547,7 @@ const completeCheckout = async (req, res) => {
         await walletTransaction.save();
         user.walletTransactions.push(walletTransaction._id);
         user.wallet-=parseFloat(cartTotal);
-        order.status = 'paid';
+        order.status ='paid';
     }
 
 
@@ -958,10 +959,14 @@ const changePassword  = async (req,res)=>{
 
 const loadUserOrders  = async (req,res)=>{
     const userId = req.user.userId;
-
-const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address').sort({createdAt:-1})
+    const totalOrdersCount  = await Order.countDocuments({});
+    let itemsPerPage =10;
+    let pageNumber=parseInt(req.query.page) || 1;
+    const totalPages = Math.ceil(totalOrdersCount/itemsPerPage)
+    const startIndex = (pageNumber-1)*itemsPerPage
+    const orders = await Order.find({user:userId}).populate('products.product').populate('user').populate('address').sort({createdAt:-1}).skip(startIndex ).limit(itemsPerPage)
     let message = req.query.message
-    res.render('userorders',{orders,message});
+    res.render('userorders',{orders,message,totalPages,currentPage:pageNumber});
 
 }
 
@@ -1041,7 +1046,7 @@ const cancelSingleProduct =async (req,res)=>{
 
     const selectedSize = product.sizes.find(size =>size.size === selectedProduct.size );
 
-    if(selectedProduct.status === 'cancelled' || selectedProduct.status === 'returned' || order.status === 'cancelled'){
+    if(selectedProduct.status === 'cancelled' || selectedProduct.status === 'returned' || order.status === 'cancelled' || order.status === 'delivered'){
       return  res.redirect('/user/userorders?message="the product is already cancelled or retured"');
     }
 
@@ -1152,20 +1157,34 @@ const returnProduct = async(req,res)=>{
 
 
 
-const loadWallet = async(req,res)=>{
-    try {
-        const userId = req.user.userId;
-        const user = await User.findById({_id:userId}).populate('walletTransactions')
-        if(!user){
-            return res.status(404).json({message:"no such user found"})
-        }        
-        
-        res.render('userwallet',{user})
-
-    } catch (error) {
-        res.status(500).json({message:'Something went wrong, please try again'})
+const loadWallet = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await User.findById({ _id: userId }).populate(
+      "walletTransactions"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "no such user found" });
     }
-}
+
+    const walletTransactions = [...user.walletTransactions];
+    walletTransactions.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+    const pageNumber = req.query.page || 1;
+    let itemsPerPage = 5;
+    let totalPages = Math.floor(walletTransactions.length / itemsPerPage);
+    const startIndex = (pageNumber - 1) * itemsPerPage;
+    const endIndex = pageNumber * itemsPerPage;
+
+    const currentTransactions = walletTransactions.slice(startIndex, endIndex);
+
+    res.render('userwallet', { user, currentTransactions, totalPages,currentPage:pageNumber });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong, please try again" });
+  }
+};
 
 
 const loadSample = async (req,res)=>{

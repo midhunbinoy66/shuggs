@@ -15,6 +15,7 @@ const Address = require('./models/address');
 const Cart = require('./models/cart');
 const Product = require('./models/product');
 const CartHistory = require('./models/carthistory');
+const slugify = require('slugify');
 
 
 
@@ -36,10 +37,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/user',userRouter);
-app.use('/api/v1/admin',adminRouter);
-app.get('/', (req, res) => {
-  res.redirect('/user/login');
-});
+app.use('/admin',adminRouter);
+
+
+
+
+
+
 
 //middlewares 
 app.use(notFound);
@@ -51,6 +55,7 @@ const start = async ()=>{
     app.listen(PORT,console.log(`server is listening on port ${PORT}`));
 
 }
+
 
 
 start();
