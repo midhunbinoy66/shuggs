@@ -21,7 +21,7 @@ const slugify = require('slugify');
 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.use((req, res, next) => {
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     next();
@@ -32,7 +32,7 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.set('view engine','ejs');
-app.set('views','views/errorpages');
+app.set('views','views/user');
 app.use(express.json());
 app.use(cookieParser());
 
@@ -40,7 +40,7 @@ app.use('/user',userRouter);
 app.use('/admin',adminRouter);
 
 app.get('/',(req,res)=>{
-  res.redirect('/user/login')
+  res.render('userDashboard')
 })
 
 
