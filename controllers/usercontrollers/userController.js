@@ -22,7 +22,10 @@ const ProductOffer = require('../../models/productOffer');
 const { calculateTotal } = require('../../utils/coupon');
 const notFound = require('../../middlewares/notfound');
 
-
+var razorpay = new Razorpay({
+    key_id: 'rzp_test_XTV4tqVFhaTx6m',
+    key_secret: '2unUYBkxN3MAB5LM1Ax8sJRW',
+  });
 
 
 
