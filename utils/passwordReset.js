@@ -24,7 +24,7 @@ const  sendResetEmail = (email,token) =>{
         from: process.env.SMTP_USERNAME,
         to: email,
         subject: "Passord reset  link",
-        text: `Your passwor reset link  is:http://localhost:3000/user/verifyresetpassword/${token} `,
+        text: `Your password reset link  is:https://shuggs.onrender.com/user/verifyresetpassword/${token} `,
       };
       
       transporter.sendMail(mailOptions, (error, info) => {
